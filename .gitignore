@@ -1,4 +1,10 @@
+#Ignore system files
 .DS_Store
 .vscode
 
+#Ignore node.js dependencies
 node_modules
+
+#Ignore .env files
+frontend/.env
+api/.env
