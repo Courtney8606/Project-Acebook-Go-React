@@ -20,7 +20,7 @@ come across something in the project you don't understand.
 
 | Title                                                     | Summary                                       |
 | --------------------------------------------------------- | --------------------------------------------- |
-| [Backend Structure](./docs/backend_structure.md)          | `app.js`, routers, controllers, models        |
+| [Backend Structure](./docs/backend_structure.md)          | `main.go`, routers, controllers, models        |
 | [Frontend Structure](./docs/frontend_structure.md)        | `App.jsx`, routes, pages, components          |
 | [Environment Variables](./docs/environment_variables.md)  | `process.env`,`import.meta.env`, `.env` files |
-| [Modules](./docs/modules.md)                              | `import` vs. `require`                        |
+| [JS Modules](./docs/modules.md)                              | `import` vs. `require`                        |

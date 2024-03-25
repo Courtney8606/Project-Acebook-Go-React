@@ -41,8 +41,8 @@ For this reason, we have included them in the `.gitignore` lists.
 
 ## Reading Environment Variables
 
-When a Node.js program (like our api) is running, its environment variables can
-be read from the built-in `process.env` object, e.g. `process.env.PORT`.
+When a Go program (like our api) is running, its environment variables can
+be read using the built-in `os.Getenv` function.
 
 In the frontend, Vite loads our environment variables, and they can be read from
 the built-in `import.meta.env` object e.g. `import.meta.env.VITE_BACKEND_URL`
@@ -66,20 +66,19 @@ In this template there is only one environment variable used by the frontend:
 
 The backend api currently uses four environment variables:
 
-- **MONGODB_URL**
+- **POSTGRES_URL**
 
-  This is the URL that describes the location of the mongodb database, also
+  This is the URL that describes the location of the postgres database, also
   known as a _connection string_. The default value is
-  `mongodb://0.0.0.0/acebook`. It consists of three parts:
+  `postgresql://localhost:5432/acebook`. It consists of three parts:
 
-  - `mongodb://` is the _protocol_ of the url, similar to `http://` for http
+  - `postgresql://` is the _protocol_ of the url, similar to `http://` for http
     requests.
-  - `0.0.0.0` is the _host ip_. All 0s means localhost, your local machine.
+  - `localhost:5432` is the _host ip_. All 0s means localhost, your local machine.
   - `acebook` is the database name
 
   You might change this environment variable if you were using a cloud database
-  to store your data, such as MongoDB Atlas, instead of a local mongodb
-  instance.
+  to store your data instead of a local Postgresql instance.
 
 - **JWT_SECRET**
 
@@ -94,26 +93,9 @@ The backend api currently uses four environment variables:
   could be something short such as "secret", but in a production app you would
   want a longer, more secure value.
 
-- **NODE_ENV**
-
-  This is a commonly used environment variable which typically has the value
-  `development` or `production`. It tells our app whether it's running in a
-  development environment or a deployed environment. This is useful for enabling
-  and disabling features that might be helpful in development, but that you
-  wouldn't want a real user to see, such as sending detailed error messages or
-  skipping authentication.
-
-- **PORT**
-
-  This environment variable tells the backend which port to run the server on.
-  It is important that this matches up with the frontend's VITE_BACKEND_URL
-
-  You might change this variable if you had some other program running on the
-  default port, and wanted to avoid clashes.
-
 ## Testing
 
 When we run our tests, the `.env.test` file is loaded, instead of the regular
 `.env` file. This allows us to set different values for our environment
-variables, such as updating the `MONGODB_URL` to point to a test database
+variables, such as updating the `POSTGRES_URL` to point to a test database
 instead of the main acebook database.

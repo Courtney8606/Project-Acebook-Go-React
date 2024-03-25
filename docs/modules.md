@@ -1,4 +1,4 @@
-# Modules
+# JS Modules
 
 You may have noticed that there are two different ways of importing code between
 files being used in this project. The backend uses `require` and the frontend
