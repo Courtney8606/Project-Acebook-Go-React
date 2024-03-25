@@ -81,7 +81,7 @@ We need to create two `.env` files, one in the frontend and one in the api.
 Create a file `frontend/.env` with the following contents:
 
 ```
-VITE_BACKEND_URL="http://localhost:3000"
+VITE_BACKEND_URL="http://localhost:8082"
 ```
 
 #### Backend
