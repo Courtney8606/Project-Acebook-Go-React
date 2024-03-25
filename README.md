@@ -61,10 +61,15 @@ Follow the instructions here: https://go.dev/doc/install
    ```
 5. Install an ESLint plugin for your editor, for example
    [ESLint for VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-6. Start MongoDB
+6. Start Postgresql
 
    ```
    brew services start postgresql
+   ```
+7. Create your databases:
+   ```
+   createdb acebook
+   createdb acebook_test
    ```
 
 ### Setting up environment variables.
