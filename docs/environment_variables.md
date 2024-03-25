@@ -29,8 +29,8 @@ There are two common ways to set environment variables when running an app.
    called `dotenv`.
 
    ```
-   MY_ENVIRONMENT_VARIABLE=some_value
-   PORT=4000
+   POSTGRES_URL="postgresql://localhost:5432/acebook"
+   JWT_SECRET="secret"
    ```
 
 This app uses `.env` files to load environment variables.
@@ -41,8 +41,8 @@ For this reason, we have included them in the `.gitignore` lists.
 
 ## Reading Environment Variables
 
-When a Go program (like our api) is running, its environment variables can
-be read using the built-in `os.Getenv` function.
+When a Go program (like our api) is running, its environment variables can be
+read using the built-in `os.Getenv` function.
 
 In the frontend, Vite loads our environment variables, and they can be read from
 the built-in `import.meta.env` object e.g. `import.meta.env.VITE_BACKEND_URL`
@@ -74,7 +74,8 @@ The backend api currently uses four environment variables:
 
   - `postgresql://` is the _protocol_ of the url, similar to `http://` for http
     requests.
-  - `localhost:5432` is the _host ip_. All 0s means localhost, your local machine.
+  - `localhost:5432` is the _host ip_. All 0s means localhost, your local
+    machine.
   - `acebook` is the database name
 
   You might change this environment variable if you were using a cloud database
