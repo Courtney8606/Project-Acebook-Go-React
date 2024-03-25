@@ -113,11 +113,11 @@ In a new terminal session...
 ; npm run dev
 ```
 
-You should now be able to open your browser and go to
-`http://localhost:5174/signup` to create a new user.
+You should now be able to open your browser and go to the
+`http://localhost:5173/signup` to create a new user.
 
 Then, after signing up, you should be able to log in by going to
-`http://localhost:5174/login`.
+`http://localhost:5173/login`.
 
 After logging in, you won't see much but you can create posts using PostMan and
 they should then show up in the browser if you refresh the page.
