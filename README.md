@@ -1,4 +1,4 @@
-## Acebook MERN Template
+## Acebook Go/React Template
 
 In this project, you are task with working on an existing application. A
 significant part of the challenge will be to familiarise yourself with the
@@ -61,10 +61,15 @@ Follow the instructions here: https://go.dev/doc/install
    ```
 5. Install an ESLint plugin for your editor, for example
    [ESLint for VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-6. Start MongoDB
+6. Start Postgresql
 
    ```
    brew services start postgresql
+   ```
+7. Create your databases:
+   ```
+   createdb acebook
+   createdb acebook_test
    ```
 
 ### Setting up environment variables.
@@ -76,7 +81,7 @@ We need to create two `.env` files, one in the frontend and one in the api.
 Create a file `frontend/.env` with the following contents:
 
 ```
-VITE_BACKEND_URL="http://localhost:3000"
+VITE_BACKEND_URL="http://localhost:8082"
 ```
 
 #### Backend
@@ -108,11 +113,11 @@ In a new terminal session...
 ; npm run dev
 ```
 
-You should now be able to open your browser and go to
-`http://localhost:5174/signup` to create a new user.
+You should now be able to open your browser and go to the
+`http://localhost:5173/signup` to create a new user.
 
 Then, after signing up, you should be able to log in by going to
-`http://localhost:5174/login`.
+`http://localhost:5173/login`.
 
 After logging in, you won't see much but you can create posts using PostMan and
 they should then show up in the browser if you refresh the page.
