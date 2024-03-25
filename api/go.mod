@@ -1,4 +1,4 @@
-module github.com/makersacademy/go-react-acebook-template
+module github.com/makersacademy/go-react-acebook-template/api
 
 go 1.21.5
 

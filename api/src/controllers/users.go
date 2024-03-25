@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/makersacademy/go-react-acebook-template/src/models"
+	"github.com/makersacademy/go-react-acebook-template/api/src/models"
 )
 
 func CreateUser(ctx *gin.Context) {

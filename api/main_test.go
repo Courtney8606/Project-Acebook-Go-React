@@ -10,10 +10,10 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/makersacademy/go-react-acebook-template/src/auth"
-	"github.com/makersacademy/go-react-acebook-template/src/controllers"
-	"github.com/makersacademy/go-react-acebook-template/src/env"
-	"github.com/makersacademy/go-react-acebook-template/src/models"
+	"github.com/makersacademy/go-react-acebook-template/api/src/auth"
+	"github.com/makersacademy/go-react-acebook-template/api/src/controllers"
+	"github.com/makersacademy/go-react-acebook-template/api/src/env"
+	"github.com/makersacademy/go-react-acebook-template/api/src/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 
