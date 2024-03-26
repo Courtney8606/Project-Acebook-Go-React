@@ -1,0 +1,29 @@
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #f1f1f1;
+  border-radius: 10px;
+  column-gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.icon-posts {
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
+  color: #4286f4;
+}
+
+.feed-message {
+  width: 100%;
+  padding: 16px 8px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  text-align: left;
+}

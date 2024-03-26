@@ -7,7 +7,7 @@ export const CreatePostPage = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
-  const maxnumber = 20;
+  const maxnumber = 280;
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
@@ -34,9 +34,9 @@ export const CreatePostPage = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className="post-form" onSubmit={handleSubmit}>
         <h1 className="post-title">Create Post</h1>
-        <div className="icon">
+        <div className="icon-post">
           <i className="fas fa-user-circle"></i>
         </div>
         <label htmlFor="message">Enter your message:</label>
@@ -48,7 +48,13 @@ export const CreatePostPage = () => {
           value={value}
           onChange={handleChange}
         />
-        <button role="submit-button" type="submit" id="submit" value="Submit">
+        <button
+          className="create-post-button"
+          role="submit-button"
+          type="submit"
+          id="submit"
+          value="Submit"
+        >
           Submit
         </button>
       </form>
