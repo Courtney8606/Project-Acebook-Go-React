@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postCreate } from "../../services/createpost";
+import "/src/CreatePostPage.css";
 
 export const CreatePostPage = () => {
   const [value, setValue] = useState("");
@@ -34,9 +35,14 @@ export const CreatePostPage = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <h1 className="post-title">Create Post</h1>
+        <div className="icon">
+          <i className="fas fa-user-circle"></i>
+        </div>
         <label htmlFor="message">Enter your message:</label>
+        <br></br>
         <input
-          style={{ width: "300px", height: "50px", paddingLeft: "20px" }}
+          style={{ width: "300px", height: "100px", paddingLeft: "20px" }}
           id="message"
           type="text"
           value={value}
