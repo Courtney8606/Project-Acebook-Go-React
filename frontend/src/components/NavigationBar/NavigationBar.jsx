@@ -30,15 +30,15 @@ const NavigationBar = () => {
     if (token !== null) {
       return (
         <div>
-          <button className='navbarButton' onClick={createPost}>Create post</button>
-          <button className='navbarButton' onClick={logout}>Logout</button>
+          <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
+          <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
         </div>
       );
     } else {
       return (
         <div>
-          <button className='navbarButton' onClick={login}>Login</button>
-          <button className='navbarButton' onClick={signup}>Signup</button>
+          <button className='navbarButton' role='loginButton' onClick={login}>Login</button>
+          <button className='navbarButton' role='signupButton' onClick={signup}>Signup</button>
         </div>
       );
     }
@@ -48,7 +48,7 @@ const NavigationBar = () => {
     <nav>
       <div className='navbarBox'>
         <div className='navbarLogo'>
-          Acebook
+          <h1>Acebook</h1>
         </div>
         <div className='navbarButtons'>
           {renderButtons()}
