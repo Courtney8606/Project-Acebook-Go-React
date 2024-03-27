@@ -1,0 +1,11 @@
+.post-object {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #f1f1f1;
+  border-radius: 10px;
+  column-gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
