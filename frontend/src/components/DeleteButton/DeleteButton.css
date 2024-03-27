@@ -1,0 +1,21 @@
+.delete {
+  background-color: white;
+  border: none;
+  color: grey;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background-color: white;
+  border: none;
+  color: crimson;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fa.fa-trash::before {
+  padding-right: 5px;
+}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getPosts } from "../../services/posts";
 import Post from "../../components/Post/Post";
 import LikeButton from "../../components/LikeButton/LikeButton";
+import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import "/src/FeedPage.css";
 
 
@@ -58,6 +59,7 @@ export const FeedPage = () => {
               // liked={props.post.liked}
               // onToggleLike={() => toggleLike(props.post._id)}
             />
+            <DeleteButton />
           </div>
         ))}
       </div>
