@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "/src/Login.css";
 import { login } from "../../services/authentication";
 
 export const LoginPage = () => {
@@ -30,14 +30,18 @@ export const LoginPage = () => {
 
   return (
     <>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <div className="icon-login">
+          <i className="fas fa-user-circle"></i>
+        </div>
         <label htmlFor="email">Email:</label>
         <input
           id="email"
           type="text"
           value={email}
           onChange={handleEmailChange}
+          className="login-input"
         />
         <label htmlFor="password">Password:</label>
         <input
@@ -45,8 +49,15 @@ export const LoginPage = () => {
           type="password"
           value={password}
           onChange={handlePasswordChange}
+          className="login-input"
         />
-        <input role="submit-button" id="submit" type="submit" value="Submit" />
+        <input
+          className="login-button"
+          role="submit-button"
+          id="submit"
+          type="submit"
+          value="Submit"
+        />
       </form>
     </>
   );
