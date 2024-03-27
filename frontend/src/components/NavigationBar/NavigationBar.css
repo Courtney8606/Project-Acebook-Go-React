@@ -15,11 +15,7 @@
 }
 
 .navbarLogo {
-  color: #4286f4;
-  font-family: "Trebuchet MS", Tahoma, sans-serif;
-  font-size: 2rem;
   flex: 50%;
-  text-align: left;
   margin-right: 10px;
   width: 200px;
   height: 10px;
@@ -28,6 +24,14 @@
 img {
   height: auto;
   width: 70px;
+}
+
+.navbarLogo h1 {
+  color: #4286f4;
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+  font-size: 2rem;
+  text-align: left;
+  line-height: 0;
 }
 
 .navbarButtons {
