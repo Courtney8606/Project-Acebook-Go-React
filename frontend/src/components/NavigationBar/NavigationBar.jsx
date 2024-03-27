@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import acebookLogo from '../../assets/AcebookLogo.png'
 import "./NavigationBar.css";
 
 // NavigationBar will render at the top of the page. The <nav>
@@ -31,15 +30,15 @@ const NavigationBar = () => {
     if (token !== null) {
       return (
         <div>
-          <button onClick={createPost}>Create post</button>
-          <button onClick={logout}>Logout</button>
+          <button className='navbarButton' onClick={createPost}>Create post</button>
+          <button className='navbarButton' onClick={logout}>Logout</button>
         </div>
       );
     } else {
       return (
         <div>
-          <button onClick={login}>Login</button>
-          <button onClick={signup}>Signup</button>
+          <button className='navbarButton' onClick={login}>Login</button>
+          <button className='navbarButton' onClick={signup}>Signup</button>
         </div>
       );
     }
@@ -49,7 +48,7 @@ const NavigationBar = () => {
     <nav>
       <div className='navbarBox'>
         <div className='navbarLogo'>
-          <img src={acebookLogo}></img> Acebook
+          Acebook
         </div>
         <div className='navbarButtons'>
           {renderButtons()}
