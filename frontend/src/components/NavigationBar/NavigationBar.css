@@ -1,9 +1,54 @@
-nav{
-  text-align: right
+.navbarBox{
+  display: flex;
+  flex-direction: row;
+
+  /* margin properties */
+  margin-bottom: 32px;
+
+  /* border properties */
+  border-color: #4286f4;
+  border-style: solid;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 8px;
+  border-left-width: 0px;
 }
 
-.line{
-  width: 100%;
+.navbarLogo {
+  color: #4286f4;
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+  font-size: 2rem;
+  flex: 50%;
+  text-align: left;
+  margin-right: 10px;
+  width: 200px;
   height: 10px;
-  border-bottom: 2px solid black;
-  }
+}
+
+img {
+  height: auto;
+  width: 70px;
+}
+
+.navbarButtons {
+  display: flex;
+  flex-direction: column;
+  flex: 100%;
+  text-align: right;
+}
+
+.navbarButton {
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+  background-color: #4286f4;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 1rem;
+  height: 100%;
+}
+
+.navbarButton:hover {
+  background-color: white;
+  color: #4286f4;
+}
