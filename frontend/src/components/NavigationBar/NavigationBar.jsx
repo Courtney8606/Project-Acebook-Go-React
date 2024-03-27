@@ -7,6 +7,8 @@ import "./NavigationBar.css";
 const NavigationBar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  // Set functions for the different buttons on the navbar
   const logout = () => {
     // Removes the stored login token from browser's localStorage
     localStorage.removeItem('token')
@@ -14,25 +16,47 @@ const NavigationBar = () => {
   };
 
   const login = () => {
-    navigate('/login')
+    navigate('/login');
   };
 
   const signup = () => {
-    navigate('/signup')
+    navigate('/signup');
   };
 
-if (token != null) {
-  return (
-    <button onClick={logout}>Logout</button>
-  )}
+  const createPost = () => {
+    navigate('/createpost');
+  };
 
-else if (token === null) {
+  const renderButtons = () => {
+    if (token !== null) {
+      return (
+        <div>
+          <button onClick={createPost}>Create post</button>
+          <button onClick={logout}>Logout</button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button onClick={login}>Login</button>
+          <button onClick={signup}>Signup</button>
+        </div>
+      );
+    }
+  };
+
   return (
-    <div>
-    <button onClick={login}>Login</button>
-    <button onClick={signup}>Signup</button>
-    </div>
-  )}
+    <nav>
+      <div className='navbarBox'>
+        <div className='navbarLogo'>
+          ACEBOOK
+        </div>
+        <div className='navbarButtons'>
+          {renderButtons()}
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default NavigationBar;

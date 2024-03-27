@@ -1,9 +1,31 @@
-nav{
-  text-align: right
+.navbarBox{
+  display: flex;
+  flex-direction: row;
+
+  /* margin properties */
+  margin-bottom: 32px;
+
+  /* padding properties */
+  padding-bottom: 16px;
+
+  /* border properties */
+  border-color: #4286f4;
+  border-style: solid;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 8px;
+  border-left-width: 0px;
+
 }
 
-.line{
-  width: 100%;
-  height: 10px;
-  border-bottom: 2px solid black;
-  }
+.navbarLogo {
+
+  flex: 50%;
+  text-align: left;
+}
+
+.navbarButtons {
+
+  flex: 50%;
+  text-align: right;
+}
