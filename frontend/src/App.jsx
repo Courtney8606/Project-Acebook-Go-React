@@ -11,6 +11,7 @@ import NavigationBar from './components/NavigationBar/NavigationBar'
 
 // All components of the App are wrapped in a BrowserRouter component
 // which enables each component to access routes stored in it
+
 const App = () => {
   return (
     <BrowserRouter>
