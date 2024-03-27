@@ -1,0 +1,9 @@
+nav{
+  text-align: right
+}
+
+.line{
+  width: 100%;
+  height: 10px;
+  border-bottom: 2px solid black;
+  }
