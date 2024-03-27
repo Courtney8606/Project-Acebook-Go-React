@@ -53,6 +53,9 @@ func CreatePost(ctx *gin.Context) {
 	if len(requestBody.Message) == 0 {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Post message empty"})
 		return
+	} else if len(requestBody.Message) > 280 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Post message too long (must be less than or equal to 280 chars)"})
+		return
 	}
 
 	newPost := models.Post{
