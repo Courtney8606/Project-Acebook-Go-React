@@ -1,0 +1,12 @@
+.like {
+  background-color: white;
+  border: none;
+  color: grey;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fa.fa-heart::before {
+  padding-right: 5px;
+}
