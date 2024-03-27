@@ -1,5 +1,16 @@
+import "/src/Post.css";
+
 const Post = (props) => {
-  return <article key={props.post._id}>{props.post.message}</article>;
+  return (
+    <div className="post">
+      <div className="icon-posts">
+        <i className="fas fa-user-circle"></i>
+      </div>
+      <article className="feed-message" key={props.post._id}>
+        {props.post.message}
+      </article>
+    </div>
+  );
 };
 
 export default Post;

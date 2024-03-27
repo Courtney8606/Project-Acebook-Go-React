@@ -6,7 +6,6 @@ import { LoginPage } from "./pages/Login/LoginPage";
 import { SignupPage } from "./pages/Signup/SignupPage";
 import { FeedPage } from "./pages/Feed/FeedPage";
 import { CreatePostPage } from "./pages/CreatePost/CreatePostPage";
-// import CreatePostPage from "./pages/CreatePost/CreatePost";
 import NavigationBar from './components/NavigationBar/NavigationBar'
 
 // All components of the App are wrapped in a BrowserRouter component
