@@ -19,13 +19,12 @@
 }
 
 .navbarLogo {
-
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
   flex: 50%;
   text-align: left;
 }
 
 .navbarButtons {
-
   flex: 50%;
   text-align: right;
 }
