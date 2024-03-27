@@ -1,6 +1,7 @@
 .navbarBox{
   display: flex;
   flex-direction: row;
+  background-color: #c2fff2;
 
   /* margin properties */
   margin-bottom: 32px;
@@ -15,13 +16,19 @@
   border-right-width: 0px;
   border-bottom-width: 8px;
   border-left-width: 0px;
-
 }
 
 .navbarLogo {
   font-family: "Trebuchet MS", Tahoma, sans-serif;
+  font-size: 2rem;
   flex: 50%;
   text-align: left;
+  margin-right: 10px;
+}
+
+img {
+  height: auto;
+  width: 70px;
 }
 
 .navbarButtons {
