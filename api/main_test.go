@@ -35,7 +35,7 @@ func (suite *TestSuiteEnv) SetupSuite() {
 	models.AutoMigrateModels()
 	suite.db = models.Database
 	suite.app = setupApp()
-	suite.token, _ = auth.GenerateToken("test-user")
+	suite.token, _ = auth.GenerateToken(2)
 
 }
 
