@@ -30,8 +30,6 @@ const NavigationBar = () => {
     navigate('/createpost');
   };
 
-
-
   const renderButtons = () => {
     const currentURL = window.location.href;
     if ( currentURL !== 'http://localhost:5173/' ) {
@@ -56,7 +54,7 @@ const NavigationBar = () => {
   return (
     <nav>
       <div className='navbarBox'>
-        <Link to="/" className="navbarLogo">
+        <Link to="/" className="navbarLogo" id='navbarLogo'>
           <h1>Acebook</h1>
         </Link>
         <div className='navbarButtons'>
