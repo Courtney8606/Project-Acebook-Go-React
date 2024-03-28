@@ -52,7 +52,7 @@ export const FeedPage = () => {
       <h1>Posts</h1>
       <div className="feed" role="feed">
         {posts.map((post) => (
-          <div className="post-object" key={`post-container-${post.id}`}>
+          <div className="post-object">
             <Post post={post} key={post._id} />
             <LikeButton
               key={`like-${post._id}`}
