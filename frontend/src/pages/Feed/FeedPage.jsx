@@ -5,7 +5,6 @@ import { getPosts } from "../../services/posts";
 import Post from "../../components/Post/Post";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
-// import SignoutButton from "../../components/SignoutButton/SignoutButton";
 import "/src/FeedPage.css";
 
 
