@@ -1,24 +1,24 @@
 .navbarBox{
   display: flex;
   flex-direction: row;
-
-  /* margin properties */
-  margin-bottom: 32px;
+  height: 44px;
 
   /* border properties */
-  border-color: #4286f4;
+  border-color: var(--main-color);
   border-style: solid;
   border-top-width: 0px;
   border-right-width: 0px;
   border-bottom-width: 8px;
   border-left-width: 0px;
+
+  /* margin properties */
+  margin-bottom: 20px;
 }
 
 .navbarLogo {
   flex: 50%;
   margin-right: 10px;
   width: 200px;
-  height: 10px;
 }
 
 img {
@@ -27,7 +27,7 @@ img {
 }
 
 .navbarLogo h1 {
-  color: #4286f4;
+  color: var(--main-color);
   font-family: "Trebuchet MS", Tahoma, sans-serif;
   font-size: 2rem;
   text-align: left;
@@ -39,20 +39,32 @@ img {
   flex-direction: column;
   flex: 100%;
   text-align: right;
+
+  /* margin properties */
+  margin-right: 10px;
 }
 
 .navbarButton {
+  border-radius: 15px 15px 0 0;
   font-family: "Trebuchet MS", Tahoma, sans-serif;
-  background-color: #4286f4;
+  background-color: var(--main-color);
   border: none;
   color: white;
-  padding: 10px 16px;
+  padding: 10px 12px;
   text-align: center;
   font-size: 1rem;
   height: 100%;
+
+  /* border properties */
+  border-color: white;
+  border-style: solid;
+  border-top-width: 5px;
+  border-right-width: 2px;
+  border-bottom-width: 0px;
+  border-left-width: 2px;
 }
 
 .navbarButton:hover {
   background-color: white;
-  color: #4286f4;
+  color: var(--main-color);
 }
