@@ -8,7 +8,6 @@ const DeleteButton = ({ postID }) => {
 
   const handleDeletePost = () => {
     const token = localStorage.getItem("token");
-    console.log(`Attempting to delete post ${postID} with auth token ${token}`)
     if (token) {
       deletePostByID(postID, token);
       navigate("/posts");
