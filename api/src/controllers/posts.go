@@ -80,6 +80,25 @@ func CreatePost(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Post created", "token": token})
 }
 
+// Delete a single post by id
+func DeletePost(ctx *gin.Context) {
+	postID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	// Delete the post by ID
+	err = models.DeletePostByID(postID)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	// Respond with success if deletion was successful
+	ctx.JSON(http.StatusOK, gin.H{"message": "Post deleted successfully"})
+}
+
 //GET route for /posts/:id/like
 // Retrieves the number of likes for the post
 

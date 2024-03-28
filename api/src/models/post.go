@@ -65,6 +65,16 @@ func FetchPostById(post_id int) (*Post, error) {
 	return &post, nil
 }
 
+func DeletePostByID(post_id int) error {
+	var post Post
+	err := Database.Delete(&post, post_id).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func LikePost(post_id int, user_id int) error {
 	var likedPost Post
 	err := Database.First(&likedPost, post_id).Error
