@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { getPosts } from "../../services/posts";
 // import { getComments } from "../../services/comments";
 import Post from "../../components/Post/Post";
@@ -8,6 +7,7 @@ import LikeButton from "../../components/LikeButton/LikeButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import SignoutButton from "../../components/SignoutButton/SignoutButton";
 import "/src/FeedPage.css";
+
 
 export const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -88,12 +88,6 @@ export const FeedPage = () => {
             </div>
           </div>
         ))}
-      </div>
-
-      <br></br>
-
-      <div className="signoutButton" role="button">
-        <SignoutButton />
       </div>
     </>
   );
