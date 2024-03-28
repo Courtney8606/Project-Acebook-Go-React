@@ -4,8 +4,6 @@
   align-items: center;
   column-gap: 10px;
   padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 20px;
   width: 100%;
   margin-top: 20px;
 }
@@ -20,7 +18,6 @@
 .feed-message {
   width: 100%;
   padding: 16px 8px;
-  margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 10px;
