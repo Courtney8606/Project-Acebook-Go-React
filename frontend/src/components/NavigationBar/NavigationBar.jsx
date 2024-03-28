@@ -22,6 +22,10 @@ const NavigationBar = () => {
     navigate('/signup');
   };
 
+  const posts = () => {
+    navigate('/posts');
+  };
+
   const createPost = () => {
     navigate('/createpost');
   };
@@ -30,6 +34,7 @@ const NavigationBar = () => {
     if (token !== null) {
       return (
         <div>
+          <button className='navbarButton' role='postsButton' onClick={posts}>Posts</button>
           <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
           <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
         </div>

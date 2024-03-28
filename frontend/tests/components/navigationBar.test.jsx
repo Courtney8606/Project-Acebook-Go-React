@@ -27,9 +27,11 @@ describe("NavigationBar render", () => {
 
     // Test the appropriate navbar components exist
     const logo = screen.getByRole('heading');
+    const postsLink = screen.getByRole('postsButton');
     const createPostLink = screen.getByRole('createPostButton');
     const logoutLink = screen.getByRole('logoutButton');
     expect(logo).toBeTruthy();
+    expect(postsLink).toBeTruthy();
     expect(createPostLink).toBeTruthy();
     expect(logoutLink).toBeTruthy();
   });
@@ -91,6 +93,31 @@ describe("User clicks on NavigationBar components", () => {
     // Assert that navigate is called with the correct path
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith("/signup");
+    });
+  });
+
+  test("signed in user can click to navigate to posts", async () => {
+    // Remove any stored token to be sure
+    beforeEach(() => {
+      window.localStorage.removeItem("token");
+    });
+
+    // Set the localStorage to include a token to simulate logging in
+    window.localStorage.setItem("token", "testToken");    
+
+    // Get the mocked navigate function
+    const navigateMock = useNavigate();
+
+    // Render the navbar
+    render(<NavigationBar />);
+
+    // Simulate a click on the Create Post button
+    const postsLink = screen.getByRole('postsButton');
+    userEvent.click(postsLink);
+
+    // Assert that navigate is called with the correct path
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/posts");
     });
   });
 

@@ -39,6 +39,9 @@ img {
   flex-direction: column;
   flex: 100%;
   text-align: right;
+
+  /* margin properties */
+  margin-right: 10px;
 }
 
 .navbarButton {
@@ -50,6 +53,14 @@ img {
   text-align: center;
   font-size: 1rem;
   height: 100%;
+
+  /* border properties */
+  border-color: white;
+  border-style: solid;
+  border-top-width: 4px;
+  border-right-width: 8px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
 }
 
 .navbarButton:hover {
