@@ -1,4 +1,3 @@
-// import React, { useState } from "react";
 import { deletePostByID } from "../../services/deletepost";
 import { useNavigate } from "react-router-dom";
 import "./DeleteButton.css";
