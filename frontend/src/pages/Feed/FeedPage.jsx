@@ -59,7 +59,7 @@ export const FeedPage = () => {
               // liked={props.post.liked}
               // onToggleLike={() => toggleLike(props.post._id)}
             />
-            <DeleteButton />
+            <DeleteButton key={`delete-${post._id}`} postID={post._id} />
           </div>
         ))}
       </div>

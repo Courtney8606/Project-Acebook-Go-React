@@ -1,18 +1,24 @@
 // import React, { useState } from "react";
+import { deletePostByID } from "../../services/deletepost";
+import { useNavigate } from "react-router-dom";
 import "./DeleteButton.css";
 
-const DeleteButton = (props) => {
-  const deletePost = () => {
+const DeleteButton = ({ postID }) => {
+  const navigate = useNavigate();
 
+  const handleDeletePost = () => {
+    const token = localStorage.getItem("token");
+    console.log(`Attempting to delete post ${postID} with auth token ${token}`)
+    if (token) {
+      deletePostByID(postID, token);
+      navigate("/posts");
     }
+  };
 
   return (
     <button
       className="delete"
-      onClick={() => {
-        deletePost();
-      }}
-    >
+      onClick={handleDeletePost}>
       <i className="fa fa-trash"></i>
     </button>
   );
