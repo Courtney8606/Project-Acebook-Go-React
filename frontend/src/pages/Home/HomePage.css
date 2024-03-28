@@ -2,3 +2,30 @@
   display: flex;
   flex-direction: column;
 }
+
+.homepageButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.homepageButtons button {
+  width: 100%;
+  margin: 16px 64px 0px 64px;
+  text-align: center;
+  font-size: 30px;
+  color: white;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+  border-radius: 50px;
+}
+
+.homepageButtons button:hover {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  color: var(--main-color);
+  background-color: white;
+  border-color: var(--main-color);
+  border-radius: 50px;
+}

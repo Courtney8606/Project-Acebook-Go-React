@@ -15,7 +15,11 @@ const NavigationBar = () => {
   };
 
   const login = () => {
-    navigate('/login');
+    if (token) {
+      navigate('/posts');
+    } else {
+      navigate('/login');
+    };
   };
 
   const signup = () => {
