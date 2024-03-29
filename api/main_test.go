@@ -62,6 +62,7 @@ func TestSuite(t *testing.T) {
 	suite.Run(t, new(TestSuiteEnv))
 }
 
+// Can create a user successfully
 func (suite *TestSuiteEnv) Test_PostUsers_CorrectJSON() {
 	app, token := suite.app, suite.token
 
@@ -74,6 +75,7 @@ func (suite *TestSuiteEnv) Test_PostUsers_CorrectJSON() {
 	assert.Equal(suite.T(), 201, res.Code)
 }
 
+// Not allowed to create a user with incorrect JSON data
 func (suite *TestSuiteEnv) Test_PostUsers_IncorrectJSON() {
 	app, token := suite.app, suite.token
 
@@ -85,6 +87,7 @@ func (suite *TestSuiteEnv) Test_PostUsers_IncorrectJSON() {
 	assert.Equal(suite.T(), 400, suite.res.Code)
 }
 
+// Can retrieve all posts
 func (suite *TestSuiteEnv) Test_GetPosts() {
 	app, token := suite.app, suite.token
 
@@ -108,6 +111,7 @@ func (suite *TestSuiteEnv) Test_GetPosts() {
 	assert.Equal(suite.T(), "Test Post", jsonPosts.Posts[0].Message)
 }
 
+// Can create a post
 func (suite *TestSuiteEnv) Test_CreatePost() {
 	requestBody := map[string]string{
 		"message": "Test Post",
@@ -128,6 +132,7 @@ func (suite *TestSuiteEnv) Test_CreatePost() {
 	assert.Equal(suite.T(), "Post created", response["message"])
 }
 
+// A post is liked and the count of likes is available (for one like)
 func (suite *TestSuiteEnv) Test_GetLikeCountWithOneLike() {
 	newPost := models.Post{
 		Message: "Test Post",
@@ -153,6 +158,7 @@ func (suite *TestSuiteEnv) Test_GetLikeCountWithOneLike() {
 	assert.True(suite.T(), response.UserHasLiked)
 }
 
+// A post is liked and the count of likes is available (for multiple likes)
 func (suite *TestSuiteEnv) Test_GetLikeCountWithMultipleLikes() {
 	newPost := models.Post{
 		Message: "Test Post",
@@ -196,4 +202,66 @@ func (suite *TestSuiteEnv) Test_GetLikeCountWithMultipleLikes() {
 
 	assert.Equal(suite.T(), 2, response2.LikeCount)
 	assert.True(suite.T(), response2.UserHasLiked)
+}
+
+// A user can like and then unlike a post successfully
+func (suite *TestSuiteEnv) Test_UserUnlikePost() {
+	newPost := models.Post{
+		Message: "Test Post",
+	}
+	newPost.Save()
+
+	models.LikePost(int(newPost.ID), suite.userID)
+
+	req, _ := http.NewRequest("POST", fmt.Sprintf("/posts/%d/unlike", newPost.ID), nil)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+	suite.app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), http.StatusOK, suite.res.Code)
+
+	var response map[string]interface{}
+	json.NewDecoder(suite.res.Body).Decode(&response)
+
+	assert.Equal(suite.T(), "post unliked successfully", response["message"])
+
+	post, _ := models.FetchPostById(int(newPost.ID))
+	userStillLikes := models.HasUserLikedPost(*post, suite.userID)
+	assert.False(suite.T(), userStillLikes)
+}
+
+// Creating a user with an invalid email does not work
+func (suite *TestSuiteEnv) Test_CreateUser_InvalidEmail() {
+	app, token := suite.app, suite.token
+
+	requestBody := map[string]string{
+		"email":    "invalid-email",
+		"password": "testpassword",
+	}
+	requestBodyBytes, _ := json.Marshal(requestBody)
+
+	req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(requestBodyBytes))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+	req.Header.Set("Content-Type", "application/json")
+
+	app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), http.StatusBadRequest, suite.res.Code)
+}
+
+// Creating an empty post is not possible
+func (suite *TestSuiteEnv) Test_CreatePost_InvalidPostMessage() {
+	app, token := suite.app, suite.token
+
+	requestBody := map[string]string{
+		"message": "",
+	}
+	requestBodyBytes, _ := json.Marshal(requestBody)
+
+	req, _ := http.NewRequest("POST", "/posts", bytes.NewBuffer(requestBodyBytes))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+	req.Header.Set("Content-Type", "application/json")
+
+	app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), http.StatusBadRequest, suite.res.Code)
 }
