@@ -81,8 +81,14 @@ func CreatePost(ctx *gin.Context) {
 	}
 
 	val, _ := ctx.Get("userID")
-	userID := val.(uint)
-	token, _ := auth.GenerateToken(userID)
+	userID := val.(string)
+	var userIDUint uint64
+	userIDUint, err = strconv.ParseUint(userID, 10, 64)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	token, _ := auth.GenerateToken(uint(userIDUint))
 
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Post created", "token": token})
 }

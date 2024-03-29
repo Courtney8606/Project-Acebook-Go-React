@@ -22,10 +22,13 @@ import (
 
 type TestSuiteEnv struct {
 	suite.Suite
-	db    *gorm.DB
-	token string
-	app   *gin.Engine
-	res   *httptest.ResponseRecorder
+	db      *gorm.DB
+	token   string
+	token2  string
+	userID  int
+	userID2 int
+	app     *gin.Engine
+	res     *httptest.ResponseRecorder
 }
 
 // Tests are run before they start
@@ -35,18 +38,22 @@ func (suite *TestSuiteEnv) SetupSuite() {
 	models.AutoMigrateModels()
 	suite.db = models.Database
 	suite.app = setupApp()
-	suite.token, _ = auth.GenerateToken(2)
+	suite.userID = 1
+	suite.token, _ = auth.GenerateToken(uint(suite.userID))
+	suite.userID2 = 5
+	suite.token2, _ = auth.GenerateToken(uint(suite.userID2))
 
 }
 
 func (suite *TestSuiteEnv) SetupTest() {
 	suite.res = httptest.NewRecorder()
+	suite.TearDownTest()
 }
 
 // Running after each test
 func (suite *TestSuiteEnv) TearDownTest() {
-	suite.db.Raw("TRUNCATE TABLE users;")
-	suite.db.Raw("TRUNCATE TABLE posts;")
+	suite.db.Exec("TRUNCATE TABLE users")
+	suite.db.Exec("TRUNCATE TABLE posts")
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
@@ -99,4 +106,94 @@ func (suite *TestSuiteEnv) Test_GetPosts() {
 
 	assert.Equal(suite.T(), 200, suite.res.Code)
 	assert.Equal(suite.T(), "Test Post", jsonPosts.Posts[0].Message)
+}
+
+func (suite *TestSuiteEnv) Test_CreatePost() {
+	requestBody := map[string]string{
+		"message": "Test Post",
+	}
+	requestBodyBytes, _ := json.Marshal(requestBody)
+
+	req, _ := http.NewRequest("POST", "/posts", bytes.NewBuffer(requestBodyBytes))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+	req.Header.Set("Content-Type", "application/json")
+
+	suite.app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), http.StatusCreated, suite.res.Code)
+
+	var response map[string]interface{}
+	json.NewDecoder(suite.res.Body).Decode(&response)
+
+	assert.Equal(suite.T(), "Post created", response["message"])
+}
+
+func (suite *TestSuiteEnv) Test_GetLikeCountWithOneLike() {
+	newPost := models.Post{
+		Message: "Test Post",
+	}
+	newPost.Save()
+
+	models.LikePost(int(newPost.ID), suite.userID)
+
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+
+	suite.app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), 200, suite.res.Code)
+
+	var response struct {
+		LikeCount    int  `json:"LikeCount"`
+		UserHasLiked bool `json:"UserHasLiked"`
+	}
+	json.NewDecoder(suite.res.Body).Decode(&response)
+
+	assert.Equal(suite.T(), 1, response.LikeCount)
+	assert.True(suite.T(), response.UserHasLiked)
+}
+
+func (suite *TestSuiteEnv) Test_GetLikeCountWithMultipleLikes() {
+	newPost := models.Post{
+		Message: "Test Post",
+	}
+	newPost.Save()
+
+	// First user likes the post
+	models.LikePost(int(newPost.ID), suite.userID)
+
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+	suite.app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), 200, suite.res.Code)
+
+	var response struct {
+		LikeCount    int  `json:"LikeCount"`
+		UserHasLiked bool `json:"UserHasLiked"`
+	}
+	json.NewDecoder(suite.res.Body).Decode(&response)
+
+	assert.Equal(suite.T(), 1, response.LikeCount)
+	assert.True(suite.T(), response.UserHasLiked)
+
+	// Second user likes the post
+	models.LikePost(int(newPost.ID), suite.userID2)
+
+	res2 := httptest.NewRecorder()
+
+	req2, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
+	req2.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token2))
+	suite.app.ServeHTTP(res2, req2)
+
+	assert.Equal(suite.T(), 200, res2.Code)
+
+	var response2 struct {
+		LikeCount    int  `json:"LikeCount"`
+		UserHasLiked bool `json:"UserHasLiked"`
+	}
+	json.NewDecoder(res2.Body).Decode(&response2)
+
+	assert.Equal(suite.T(), 2, response2.LikeCount)
+	assert.True(suite.T(), response2.UserHasLiked)
 }

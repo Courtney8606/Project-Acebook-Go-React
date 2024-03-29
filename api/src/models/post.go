@@ -35,7 +35,7 @@ type Post struct {
 }
 
 func (post *Post) Save() (*Post, error) {
-	fmt.Println("here")
+	post.Likes = make([]int, 0)
 	err := Database.Create(post).Error
 	fmt.Println(err)
 	if err != nil {
