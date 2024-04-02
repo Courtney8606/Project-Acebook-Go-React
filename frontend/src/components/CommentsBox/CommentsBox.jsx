@@ -53,6 +53,7 @@ export const CreateComment = () => {
           type="submit"
           id="submit"
           value="Submit"
+          alt="comment-button"
         >
           Submit
         </button>
