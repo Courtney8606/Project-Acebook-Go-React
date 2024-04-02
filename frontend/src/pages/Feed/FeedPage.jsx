@@ -31,19 +31,16 @@ export const FeedPage = () => {
         // Fetch posts
         const { posts: postsData } = await getPosts(token);
         setPosts(postsData);
-        console.log(postsData);
 
         // Fetch likes for each post
         const likesData = {};
         const likedData = {};
         for (const post of postsData) {
-          console.log(post)
           const likeData = await getLikes(post._id, token);
           likesData[post._id] = likeData.LikeCount;
           likedData[post._id] = likeData.UserHasLiked;
         }
 
-        console.log(likedData)
         setLikes(likesData);
         setLiked(likedData);
       } catch (error) {
