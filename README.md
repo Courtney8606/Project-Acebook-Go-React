@@ -29,7 +29,6 @@ The primary goals of the Acebook project are to:
 - Ensure reliable backend functionality using Go, focusing on security and performance.
 
 ### Installation 
-To run Acebook locally, install the following:
 
 1. **Clone the Repository**: `git clone` https://github.com/PatSternberg/go-react-acebook-radon
 
