@@ -12,9 +12,10 @@ import (
 )
 
 type JSONPost struct {
-	ID      uint   `json:"_id"`
-	Message string `json:"message"`
-	Likes   []int  `json:"liked_user_ids"`
+	ID       uint   `json:"_id"`
+	Message  string `json:"message"`
+	Likes    []int  `json:"liked_user_ids"`
+	Username string
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -35,14 +36,21 @@ func GetAllPosts(ctx *gin.Context) {
 	}
 
 	token, _ := auth.GenerateToken(uint(userIDUint))
-
 	// Convert posts to JSON Structs
 	jsonPosts := make([]JSONPost, 0)
 	for _, post := range *posts {
+
+		postUserID := strconv.FormatUint(uint64(post.UserID), 10)
+		postUser, err := models.FindUser(postUserID)
+		if err != nil {
+			SendInternalError(ctx, err)
+			return
+		}
 		jsonPosts = append(jsonPosts, JSONPost{
-			Message: post.Message,
-			ID:      post.ID,
-			Likes:   post.Likes,
+			Message:  post.Message,
+			ID:       post.ID,
+			Likes:    post.Likes,
+			Username: postUser.Username,
 		})
 	}
 
@@ -56,6 +64,7 @@ type createPostRequestBody struct {
 func CreatePost(ctx *gin.Context) {
 	var requestBody createPostRequestBody
 	err := ctx.BindJSON(&requestBody)
+	// fmt.Println(&requestBody)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err})
@@ -70,8 +79,18 @@ func CreatePost(ctx *gin.Context) {
 		return
 	}
 
+	val, _ := ctx.Get("userID")
+	userID := val.(string)
+	var userIDUint uint64
+	userIDUint, err = strconv.ParseUint(userID, 10, 64)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
 	newPost := models.Post{
 		Message: requestBody.Message,
+		UserID:  uint(userIDUint),
 	}
 
 	_, err = newPost.Save()
@@ -80,11 +99,28 @@ func CreatePost(ctx *gin.Context) {
 		return
 	}
 
-	val, _ := ctx.Get("userID")
-	userID := val.(uint)
-	token, _ := auth.GenerateToken(userID)
+	token, _ := auth.GenerateToken(uint(userIDUint))
 
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Post created", "token": token})
+}
+
+// Delete a single post by id
+func DeletePost(ctx *gin.Context) {
+	postID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	// Delete the post by ID
+	err = models.DeletePostByID(postID)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	// Respond with success if deletion was successful
+	ctx.JSON(http.StatusOK, gin.H{"message": "Post deleted successfully"})
 }
 
 //GET route for /posts/:id/like

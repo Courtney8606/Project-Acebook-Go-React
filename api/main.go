@@ -19,10 +19,19 @@ func main() {
 	models.OpenDatabaseConnection()
 	models.AutoMigrateModels()
 
-	// Create a test testPost. Delete these lines when you are creating posts of your own.
+	testUser := models.User{
+		Email:    "testuser@testuser.com",
+		Password: "testpassword",
+		Username: "testuser",
+	}
+	testUser.Save()
+
+	userID := testUser.ID
 	testPost := models.Post{
 		Message: fmt.Sprintf("This is a test message created at %v!", time.Now()),
+		UserID:  userID,
 	}
+
 	testPost.Save()
 
 	app.Run(":8082")
