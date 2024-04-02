@@ -87,7 +87,7 @@ describe("authentication service", () => {
       expect(options.headers["Content-Type"]).toEqual("application/json");
     });
 
-    test("returns nothing if the signup request was a success", async () => {
+    test("returns response if the signup request was a success", async () => {
       const testEmail = "test@testEmail.com";
       const testPassword = "12345678";
 
@@ -95,8 +95,11 @@ describe("authentication service", () => {
         status: 201,
       });
 
+
+
       const token = await signup(testEmail, testPassword);
-      expect(token).toEqual(undefined);
+
+      expect(token).toBeTruthy();
     });
 
     test("throws an error if the request failed", async () => {
@@ -114,7 +117,7 @@ describe("authentication service", () => {
         await signup(testEmail, testPassword);
       } catch (err) {
         expect(err.message).toEqual(
-          "Received status 400 when signing up. Expected 201"
+          "An error occurred while processing the response. Please try again."
         );
       }
     });
