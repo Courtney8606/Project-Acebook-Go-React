@@ -30,9 +30,11 @@ const completeSignupForm = async () => {
 
   const emailInputEl = screen.getByPlaceholderText("Email");
   const passwordInputEl = screen.getByPlaceholderText("Password");
+  // const usernameInputEl = screen.getByPlaceholderText("Username");
   const submitButtonEl = screen.getByRole("submit-button");
 
   await user.type(emailInputEl, "test@email.com");
+  // await user.type(usernameInputEl, "TestUsername");
   await user.type(passwordInputEl, "1234");
   await user.click(submitButtonEl);
 };

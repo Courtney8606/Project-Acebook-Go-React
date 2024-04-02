@@ -6,24 +6,29 @@ import { signup } from "../../services/authentication";
 export const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
     const clearFormFields = () => {
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
+      document.getElementById("username").value = "";
     };
 
     const handleErrorResponse = async (response) => {
       let data = await response.json();
-           if (data.message == "Must supply username and password") {
-          setErrorMessage("Please input both a valid email address and a password");
+           if (data.message == "Must supply email, username and password") {
+          setErrorMessage("Please input both a valid email address, username and a password");
       } else if (data.message === "Invalid email address") {
           setErrorMessage("Please include a valid email address");
           clearFormFields();
       } else if (data.message === "Email address already in use") {
           setErrorMessage("This email address is already in use. Please log in or sign up with a different email address");
           document.getElementById("password").value = "";
+      } else if (data.message === "Username already in use") {
+        setErrorMessage("This username address is already in use. Please log in or sign up with a different username");
+        document.getElementById("password").value = "";
       } else {
           setErrorMessage("An error has occurred. Please try again");
           clearFormFields();
@@ -35,7 +40,7 @@ export const SignupPage = () => {
   const handleSubmit = async (event) => {
       event.preventDefault();
       try {
-          const response = await signup(email, password);
+          const response = await signup(email, password, username);
           console.log(response);
           if (response.status == 400) {
               await handleErrorResponse(response);
@@ -57,6 +62,10 @@ export const SignupPage = () => {
     setPassword(event.target.value);
   };
 
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  }
+
   return (
     <>
       <form className="signup-form" onSubmit={handleSubmit}>
@@ -71,6 +80,16 @@ export const SignupPage = () => {
           type="text"
           value={email}
           onChange={handleEmailChange}
+          className="signup-input"
+        />
+                <br></br>
+        <label htmlFor="username"></label>
+        <input
+          placeholder="Username"
+          id="username"
+          type="text"
+          value={username}
+          onChange={handleUsernameChange}
           className="signup-input"
         />
         <br></br>

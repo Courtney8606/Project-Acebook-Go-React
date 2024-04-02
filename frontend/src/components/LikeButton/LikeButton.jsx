@@ -4,8 +4,6 @@ import "/src/LikeButton.css";
 const LikeButton = (props) => {
   const heartColour = props.liked ? "#ff6666" : "grey";
 
-  console.log("Likes prop:", props.likes);
-
   return (
     <div>
       <button
