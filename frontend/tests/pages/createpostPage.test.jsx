@@ -41,6 +41,7 @@ describe("Create Post", () => {
     render(<CreatePostPage />);
     await completeCreatePost();
     expect(postCreate).toHaveBeenCalledWith("Test message", "testToken");
+    
   });
 
   test("Natigates to Feedpage if token", async () => {

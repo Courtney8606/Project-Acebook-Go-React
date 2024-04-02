@@ -1,40 +1,61 @@
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-
 import { HomePage } from "../../src/pages/Home/HomePage";
+
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
+import { useNavigate } from "react-router-dom";
+
+// Mocking React Router's useNavigate function
+vi.mock("react-router-dom", () => {
+  const navigateMock = vi.fn();
+  const useNavigateMock = () => navigateMock;
+  return { useNavigate: useNavigateMock };
+});
 
 describe("Home Page", () => {
   test("welcomes you to the site", () => {
     // We need the Browser Router so that the Link elements load correctly
     render(
-      <BrowserRouter>
         <HomePage />
-      </BrowserRouter>
     );
 
     const heading = screen.getByRole("heading");
     expect(heading.textContent).toEqual("Welcome to Acebook!");
   });
 
-  test("Displays a signup link", async () => {
+  test("Renders a functioning login link", async () => {
+    // Get the mocked navigate function
+    const navigateMock = useNavigate();
+
     render(
-      <BrowserRouter>
         <HomePage />
-      </BrowserRouter>
     );
 
-    const signupLink = screen.getByText("Sign Up");
-    expect(signupLink.getAttribute("href")).toEqual("/signup");
+    // Simulate a click on the Login button
+    const loginLink = screen.getByRole('loginButton');
+    userEvent.click(loginLink);
+
+    // Assert that navigate is called with the correct path
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/login");
+    });
   });
 
-  test("Displays a login link", async () => {
+  test("Renders a functioning signup link", async () => {
+    // Get the mocked navigate function
+    const navigateMock = useNavigate();
+
     render(
-      <BrowserRouter>
         <HomePage />
-      </BrowserRouter>
     );
 
-    const loginLink = screen.getByText("Log In");
-    expect(loginLink.getAttribute("href")).toEqual("/login");
+    // Simulate a click on the Login button
+    const signupLink = screen.getByRole('signupButton');
+    userEvent.click(signupLink);
+
+    // Assert that navigate is called with the correct path
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/signup");
+    });
   });
 });
