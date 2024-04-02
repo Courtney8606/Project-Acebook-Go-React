@@ -75,6 +75,14 @@ func FetchPostById(post_id int) (*Post, error) {
 	return &post, nil
 }
 
+func DeletePostByID(post_id int) error {
+	var post Post
+	err := Database.Delete(&post, post_id).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
 func HasUserLikedPost(post Post, user_id int) bool {
 	for _, likedUserID := range post.Likes {
 		if likedUserID == user_id {
