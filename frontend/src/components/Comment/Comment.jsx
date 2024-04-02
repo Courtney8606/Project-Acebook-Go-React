@@ -5,7 +5,7 @@ const Comment = (props) => {
         <i className="fas fa-user-circle"></i>
       </div>
       {/* Need to determine props once backend is built - these are placeholders*/}
-      <article className="feed-comment" key={props.comment._id}>
+      <article className="feed-comment" key={props.comment.id}>
         {props.comment.comment}
       </article>
     </div>
