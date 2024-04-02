@@ -32,6 +32,7 @@ type Post struct {
 	gorm.Model
 	Message string   `json:"message"`
 	Likes   IntSlice `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+	UserID  uint     `json:"user_id"`
 }
 
 func (post *Post) Save() (*Post, error) {
