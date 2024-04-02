@@ -30,9 +30,10 @@ func (is IntSlice) Value() (driver.Value, error) {
 
 type Post struct {
 	gorm.Model
-	Message string   `json:"message"`
-	Likes   IntSlice `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
-	UserID  uint     `json:"user_id"`
+	Message  string    `json:"message"`
+	Likes    IntSlice  `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+	UserID   uint      `json:"user_id"`
+	Comments []Comment `gorm:"foreignKey:PostID"`
 }
 
 func (post *Post) Save() (*Post, error) {

@@ -15,7 +15,7 @@ type JSONPost struct {
 	ID       uint   `json:"_id"`
 	Message  string `json:"message"`
 	Likes    []int  `json:"liked_user_ids"`
-	Username string
+	Username string `json:"username"`
 }
 
 func GetAllPosts(ctx *gin.Context) {

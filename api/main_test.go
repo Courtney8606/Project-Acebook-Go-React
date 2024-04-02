@@ -53,8 +53,10 @@ func (suite *TestSuiteEnv) SetupTest() {
 
 // Running after each test
 func (suite *TestSuiteEnv) TearDownTest() {
+	suite.db.Exec("DELETE FROM comments")
 	suite.db.Exec("DELETE FROM posts")
 	suite.db.Exec("DELETE FROM users")
+
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
@@ -311,4 +313,95 @@ func (suite *TestSuiteEnv) Test_CreatePost_InvalidPostMessage() {
 	app.ServeHTTP(suite.res, req)
 
 	assert.Equal(suite.T(), http.StatusBadRequest, suite.res.Code)
+}
+
+func (suite *TestSuiteEnv) Test_PostComment() {
+	app := suite.app
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser1@example.com",
+		Password: "password123",
+	}
+	user.Save()
+	token, _ := auth.GenerateToken(user.ID)
+	// Create a post
+	newPost := models.Post{
+		Message: "Test Post",
+		UserID:  user.ID, // Associate the post with the created user
+	}
+	newPost.Save()
+
+	// //Comment on the post
+	// newComment := models.Comment{
+	// 	Text:   "Test Comment",
+	// 	PostID: newPost.ID,
+	// 	UserID: user.ID,
+	// }
+	// newComment.Save()
+	userID := strconv.FormatUint(uint64(user.ID), 10)
+	requestBody := map[string]string{
+		"text":    "Test Comment",
+		"user_id": userID,
+	}
+
+	requestBodyBytes, _ := json.Marshal(requestBody)
+	req, _ := http.NewRequest("POST", fmt.Sprintf("/comments/%d", newPost.ID), bytes.NewBuffer(requestBodyBytes))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+	req.Header.Set("Content-Type", "application/json")
+
+	app.ServeHTTP(suite.res, req)
+
+	assert.Equal(suite.T(), 201, suite.res.Code)
+
+	var response map[string]interface{}
+	json.NewDecoder(suite.res.Body).Decode(&response)
+
+	assert.Equal(suite.T(), "Comment posted", response["message"])
+	// assert.Equal(suite.T(), user.ID, response["userID"])
+	// assert.Equal(suite.T(), newPost.ID, response["postID"])
+}
+
+func (suite *TestSuiteEnv) Test_GetComments() {
+	app, token := suite.app, suite.token
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser1@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Create a post
+	newPost := models.Post{
+		Message: "Test Post",
+		UserID:  user.ID, // Associate the post with the created user
+	}
+	newPost.Save()
+
+	// Like the post
+	models.LikePost(int(newPost.ID), suite.userID)
+
+	//Comment on the post
+	newComment := models.Comment{
+		Text:   "Test Comment",
+		PostID: newPost.ID,
+		UserID: user.ID,
+	}
+	newComment.Save()
+
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/comments/%d", newPost.ID), nil)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+
+	app.ServeHTTP(suite.res, req)
+
+	responseData, _ := io.ReadAll(suite.res.Body)
+	var jsonComments struct {
+		Comments []controllers.JSONComment
+	}
+
+	_ = json.Unmarshal(responseData, &jsonComments)
+
+	assert.Equal(suite.T(), 200, suite.res.Code)
+	assert.Equal(suite.T(), "Test Comment", jsonComments.Comments[0].Text)
 }
