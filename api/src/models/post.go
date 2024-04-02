@@ -32,6 +32,7 @@ type Post struct {
 	gorm.Model
 	Message string   `json:"message"`
 	Likes   IntSlice `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+	UserID  uint     `json:"user_id"`
 }
 
 func (post *Post) Save() (*Post, error) {
@@ -73,6 +74,15 @@ func FetchPostById(post_id int) (*Post, error) {
 		return &Post{}, err
 	}
 	return &post, nil
+}
+
+func DeletePostByID(post_id int) error {
+	var post Post
+	err := Database.Delete(&post, post_id).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func HasUserLikedPost(post Post, user_id int) bool {

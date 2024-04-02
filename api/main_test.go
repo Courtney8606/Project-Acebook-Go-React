@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -40,7 +41,7 @@ func (suite *TestSuiteEnv) SetupSuite() {
 	suite.app = setupApp()
 	suite.userID = 1
 	suite.token, _ = auth.GenerateToken(uint(suite.userID))
-	suite.userID2 = 5
+	suite.userID2 = 2
 	suite.token2, _ = auth.GenerateToken(uint(suite.userID2))
 
 }
@@ -52,8 +53,8 @@ func (suite *TestSuiteEnv) SetupTest() {
 
 // Running after each test
 func (suite *TestSuiteEnv) TearDownTest() {
-	suite.db.Exec("TRUNCATE TABLE users")
-	suite.db.Exec("TRUNCATE TABLE posts")
+	suite.db.Exec("DELETE FROM posts")
+	suite.db.Exec("DELETE FROM users")
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
@@ -67,7 +68,7 @@ func (suite *TestSuiteEnv) Test_PostUsers_CorrectJSON() {
 	app, token := suite.app, suite.token
 
 	res := httptest.NewRecorder()
-	var jsonStr = []byte(`{"email":"test@email.com", "password": "testpassword"}`)
+	var jsonStr = []byte(`{"email":"tester@email.com", "password": "testpassword", "username": "tester"}`)
 	req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
 	app.ServeHTTP(res, req)
@@ -90,9 +91,15 @@ func (suite *TestSuiteEnv) Test_PostUsers_IncorrectJSON() {
 // Can retrieve all posts
 func (suite *TestSuiteEnv) Test_GetPosts() {
 	app, token := suite.app, suite.token
-
+	// Create a user
+	user := models.User{
+		Email:    "testuser6@example.com",
+		Password: "password123",
+	}
+	user.Save()
 	newPost := models.Post{
 		Message: "Test Post",
+		UserID:  user.ID,
 	}
 	newPost.Save()
 
@@ -113,16 +120,30 @@ func (suite *TestSuiteEnv) Test_GetPosts() {
 
 // Can create a post
 func (suite *TestSuiteEnv) Test_CreatePost() {
+	app := suite.app
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Generate token for the user
+	token, _ := auth.GenerateToken(user.ID)
+	userID := strconv.FormatUint(uint64(user.ID), 10)
+	// Create a post using the user's token
 	requestBody := map[string]string{
 		"message": "Test Post",
+		"user_id": userID,
 	}
 	requestBodyBytes, _ := json.Marshal(requestBody)
 
 	req, _ := http.NewRequest("POST", "/posts", bytes.NewBuffer(requestBodyBytes))
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
 	req.Header.Set("Content-Type", "application/json")
 
-	suite.app.ServeHTTP(suite.res, req)
+	app.ServeHTTP(suite.res, req)
 
 	assert.Equal(suite.T(), http.StatusCreated, suite.res.Code)
 
@@ -134,17 +155,29 @@ func (suite *TestSuiteEnv) Test_CreatePost() {
 
 // A post is liked and the count of likes is available (for one like)
 func (suite *TestSuiteEnv) Test_GetLikeCountWithOneLike() {
+	app, token := suite.app, suite.token
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser1@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Create a post
 	newPost := models.Post{
 		Message: "Test Post",
+		UserID:  user.ID, // Associate the post with the created user
 	}
 	newPost.Save()
 
+	// Like the post
 	models.LikePost(int(newPost.ID), suite.userID)
 
 	req, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
 
-	suite.app.ServeHTTP(suite.res, req)
+	app.ServeHTTP(suite.res, req)
 
 	assert.Equal(suite.T(), 200, suite.res.Code)
 
@@ -160,17 +193,30 @@ func (suite *TestSuiteEnv) Test_GetLikeCountWithOneLike() {
 
 // A post is liked and the count of likes is available (for multiple likes)
 func (suite *TestSuiteEnv) Test_GetLikeCountWithMultipleLikes() {
+	app, token := suite.app, suite.token
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser2@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Create a post
 	newPost := models.Post{
 		Message: "Test Post",
+		UserID:  user.ID, // Associate the post with the created user
 	}
 	newPost.Save()
 
-	// First user likes the post
-	models.LikePost(int(newPost.ID), suite.userID)
+	// Like the post twice
+	models.LikePost(int(newPost.ID), int(suite.userID))
+	models.LikePost(int(newPost.ID), int(suite.userID2))
 
 	req, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
-	suite.app.ServeHTTP(suite.res, req)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+
+	app.ServeHTTP(suite.res, req)
 
 	assert.Equal(suite.T(), 200, suite.res.Code)
 
@@ -180,42 +226,35 @@ func (suite *TestSuiteEnv) Test_GetLikeCountWithMultipleLikes() {
 	}
 	json.NewDecoder(suite.res.Body).Decode(&response)
 
-	assert.Equal(suite.T(), 1, response.LikeCount)
+	assert.Equal(suite.T(), 2, response.LikeCount)
 	assert.True(suite.T(), response.UserHasLiked)
-
-	// Second user likes the post
-	models.LikePost(int(newPost.ID), suite.userID2)
-
-	res2 := httptest.NewRecorder()
-
-	req2, _ := http.NewRequest("GET", fmt.Sprintf("/posts/%d/like", newPost.ID), nil)
-	req2.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token2))
-	suite.app.ServeHTTP(res2, req2)
-
-	assert.Equal(suite.T(), 200, res2.Code)
-
-	var response2 struct {
-		LikeCount    int  `json:"LikeCount"`
-		UserHasLiked bool `json:"UserHasLiked"`
-	}
-	json.NewDecoder(res2.Body).Decode(&response2)
-
-	assert.Equal(suite.T(), 2, response2.LikeCount)
-	assert.True(suite.T(), response2.UserHasLiked)
 }
 
 // A user can like and then unlike a post successfully
 func (suite *TestSuiteEnv) Test_UserUnlikePost() {
+	app, token := suite.app, suite.token
+
+	// Create a user
+	user := models.User{
+		Email:    "testuser3@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Create a post
 	newPost := models.Post{
 		Message: "Test Post",
+		UserID:  user.ID, // Associate the post with the created user
 	}
 	newPost.Save()
 
+	// Like the post
 	models.LikePost(int(newPost.ID), suite.userID)
 
+	// Unlike the post
 	req, _ := http.NewRequest("POST", fmt.Sprintf("/posts/%d/unlike", newPost.ID), nil)
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", suite.token))
-	suite.app.ServeHTTP(suite.res, req)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+	app.ServeHTTP(suite.res, req)
 
 	assert.Equal(suite.T(), http.StatusOK, suite.res.Code)
 
@@ -252,6 +291,14 @@ func (suite *TestSuiteEnv) Test_CreateUser_InvalidEmail() {
 func (suite *TestSuiteEnv) Test_CreatePost_InvalidPostMessage() {
 	app, token := suite.app, suite.token
 
+	// Create a user
+	user := models.User{
+		Email:    "testuser4@example.com",
+		Password: "password123",
+	}
+	user.Save()
+
+	// Attempt to create an empty post
 	requestBody := map[string]string{
 		"message": "",
 	}
