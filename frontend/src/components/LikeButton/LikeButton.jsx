@@ -1,34 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import "/src/LikeButton.css";
 
 const LikeButton = (props) => {
-  const [heartColor, setHeartColor] = useState("grey");
-  const [count, setCount] = useState(0);
-  //   Need to input stored useState eg. props.post.count
+  const heartColour = props.liked ? "#ff6666" : "grey";
 
-  const toggleLike = () => {
-    if (heartColor === "grey") {
-      setHeartColor("#ff6666");
-      setCount(count + 1);
-    } else {
-      setHeartColor("grey");
-      setCount(count - 1);
-    }
-  };
+  console.log("Likes prop:", props.likes);
 
   return (
     <div>
       <button
         className="like"
+        id="like-button"
         onClick={() => {
-          toggleLike();
           props.onToggleLike();
         }}
       >
-        <i className="fa fa-heart" style={{ color: heartColor }}>
-          {count}
+        <i className="fa fa-heart" style={{ color: heartColour }}>
+          {props.likes}
         </i>
-        {props.liked ? "" : ""}
       </button>
     </div>
   );
