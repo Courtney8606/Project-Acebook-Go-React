@@ -15,7 +15,9 @@ export const SignupPage = () => {
     };
 
     const handleErrorResponse = async (response) => {
+      try{
       let data = await response.json();
+      console.log(data);
            if (data.message == "Must supply username and password") {
           setErrorMessage("Please input both a valid email address and a password");
       } else if (data.message === "Invalid email address") {
@@ -28,8 +30,10 @@ export const SignupPage = () => {
           setErrorMessage("An error has occurred. Please try again");
           clearFormFields();
       }
-      
-     
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("An unknown error has occurred. Please try again");
+      }
   };
   
   const handleSubmit = async (event) => {
@@ -37,15 +41,14 @@ export const SignupPage = () => {
       try {
           const response = await signup(email, password);
           console.log(response);
-          if (response.status == 400) {
+          if (response.status != 201) {
               await handleErrorResponse(response);
           } else {
               console.log("redirecting...:");
               navigate("/login");
           }
       } catch (err) {
-          console.error(err);
-          navigate("/signup");
+          console.error(err)
       }
   };
 

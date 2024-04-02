@@ -49,13 +49,24 @@ describe("Login Page", () => {
   test("navigates to /posts on successful login", async () => {
     render(<LoginPage />);
 
-    login.mockResolvedValue("secrettoken123");
+    login.mockResolvedValue({ status: 201 });
     const navigateMock = useNavigate();
 
     await completeLoginForm();
 
     expect(navigateMock).toHaveBeenCalledWith("/posts");
   });
+
+  // test("sets token on successful login", async () => {
+  //   render(<LoginPage />);
+
+  //   login.mockResolvedValue({ status: 201, json: async () => ({token: "testToken"})});
+    
+
+  //   await completeLoginForm();
+
+  //   expect(window.localStorage.setItem).toHaveBeenCalledWith('token', 'testToken');
+  // });
 
   test("navigates to /login on unsuccessful login", async () => {
     render(<LoginPage />);
@@ -66,5 +77,62 @@ describe("Login Page", () => {
     await completeLoginForm();
 
     expect(navigateMock).toHaveBeenCalledWith("/login");
+    
   });
+
+  test("displays error message for incorrect password", async () => {
+    render(<LoginPage />);
+    login.mockResolvedValueOnce({
+      status: 400, json: async () => ({message: "Password incorrect"})
+    })
+    
+    const navigateMock = useNavigate();
+    await completeLoginForm();
+    expect(navigateMock).not.toHaveBeenCalled();
+  
+    // Ensure that the error message is rendered in the HTML
+    expect(screen.getByText("Password is incorrect. Please try again.")).toBeTruthy();
+  
+  })
+
+  test("displays undefined error message", async () => {
+    render(<LoginPage />);
+    login.mockResolvedValueOnce({
+      status: 400, json: async () => ({message: "Another message"})
+    })
+    
+    const navigateMock = useNavigate();
+    await completeLoginForm();
+    expect(navigateMock).not.toHaveBeenCalled();
+  
+    // Ensure that the error message is rendered in the HTML
+    expect(screen.getByText("An error has occurred. Please try again.")).toBeTruthy();
+  
+  })
+
+  test("displays error when an email address is not found", async () => {
+    render(<LoginPage />);
+    login.mockResolvedValueOnce({
+      status: 500
+    })
+    
+    const navigateMock = useNavigate();
+    await completeLoginForm();
+    expect(navigateMock).not.toHaveBeenCalled();
+  
+    // Ensure that the error message is rendered in the HTML
+    expect(screen.getByText("Email address not found. Please try a different email address or sign up.")).toBeTruthy();
+  
+  })
+
+  test("navigate to log in if a rejected Promise is returned", async () => {
+    render(<LoginPage />);
+    login.mockRejectedValueOnce()
+    
+    const navigateMock = useNavigate();
+    await completeLoginForm();
+    expect(navigateMock).toHaveBeenCalledWith("/login");
+  })
+
 });
+

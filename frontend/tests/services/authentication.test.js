@@ -40,10 +40,18 @@ describe("authentication service", () => {
       fetch.mockResponseOnce(JSON.stringify({ token: "testToken" }), {
         status: 201,
       });
+      const response = await login(testEmail, testPassword);
+       // Check if the response status is 201
+      expect(response.status).toEqual(201);
 
-      const token = await login(testEmail, testPassword);
+      // Extract the token from the response body
+      const data = await response.json();
+      const token = data.token;
+
+      // Check if the token matches the expected value
       expect(token).toEqual("testToken");
     });
+
 
     test("throws an error if the request failed", async () => {
       const testEmail = "test@testEmail.com";
