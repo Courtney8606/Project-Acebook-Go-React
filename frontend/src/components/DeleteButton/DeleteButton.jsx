@@ -5,11 +5,11 @@ import "./DeleteButton.css";
 const DeleteButton = ({ postID }) => {
   const navigate = useNavigate();
 
-  const handleDeletePost = () => {
+  const handleDeletePost = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      deletePostByID(postID, token);
-      navigate("/posts");
+      await deletePostByID(postID, token);
+      window.location.reload();
     }
   };
 
