@@ -35,17 +35,21 @@ The primary goals of the Acebook project are to:
 2. **Navigate to the Directory**: Navigate the the directory where your Acebook code is located 
 
 3. **Install dependencies for both the frontend and api applications**:
-
+- Install Homebrew:`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 - Install Node: `brew install nvm`
 - Install Go:https://go.dev/doc/install
 
 Run the following commands:
-`cd frontend`
-`npm install`
-`cd ../api`
-`go get .`
+- `cd frontend`
+- `npm install`
+- `cd ../api`
+- `go get .`
 
-4. **Start the Development Server**: 
+4. **Create Database**:
+- `createdb acebook`
+
+
+5. **Start the Development Server**: 
 Run the command `npm start`
 This starts the development server for Acebook allowing you to interact with the app in your web browser 
 Navigate to the back end server and run `go main.go` 
