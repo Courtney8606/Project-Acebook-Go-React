@@ -21,7 +21,7 @@ type JSONComment struct {
 func CreateComment(ctx *gin.Context) {
 	var requestBody createCommentRequestBody
 	err := ctx.BindJSON(&requestBody)
-	// fmt.Println(&requestBody)
+	// fmt.(&requestBody)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err})
