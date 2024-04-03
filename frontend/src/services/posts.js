@@ -23,7 +23,6 @@ export const getPosts = async (token) => {
 // The function contains an HTML query which relates the
 // user user ID to a user_id foreign key
 export const getPostsByUserID = async (userID, token) => {
-  console.log(userID)
   const requestOptions = {
     method: "GET",
     headers: {
