@@ -33,6 +33,7 @@ export const LoginPage = () => {
       } else {
       const data = await response.json();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user_id", data.user_id);
       navigate("/posts");
     }
     } catch (err) {
