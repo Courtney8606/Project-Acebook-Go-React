@@ -9,8 +9,10 @@ const NavigationBar = () => {
 
   // Set functions for the different buttons on the navbar
   const logout = () => {
-    // Removes the stored login token from browser's localStorage
+    // Removes the stored login ifno from browser's localStorage
     localStorage.removeItem('token')
+    localStorage.removeItem('userID')
+    localStorage.removeItem('username')
     navigate("/login");
   };
 
