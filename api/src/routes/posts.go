@@ -19,4 +19,5 @@ func setupPostRoutes(baseRouter *gin.RouterGroup) {
 	posts.POST("/:id/delete", middleware.AuthenticationMiddleware, controllers.DeletePost)
 
 	posts.GET("/user/:id", middleware.AuthenticationMiddleware, controllers.GetPostsForUser)
+
 }

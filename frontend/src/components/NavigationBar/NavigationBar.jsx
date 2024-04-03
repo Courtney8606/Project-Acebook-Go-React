@@ -26,28 +26,30 @@ const NavigationBar = () => {
     navigate('/signup');
   };
 
+  const posts = () => {
+    navigate('/posts');
+  };
+
   const createPost = () => {
     navigate('/createpost');
   };
 
   const renderButtons = () => {
-    const currentURL = window.location.href;
-    if ( currentURL !== 'http://localhost:5173/' ) {
-      if (token !== null) {
-        return (
-          <div>
-            <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
-            <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            <button className='navbarButton' role='loginButton' onClick={login}>Login</button>
-            <button className='navbarButton' role='signupButton' onClick={signup}>Signup</button>
-          </div>
-        );
-      }
+    if (token !== null) {
+      return (
+        <div>
+          <button className='navbarButton' role='postsButton' onClick={posts}>Posts</button>
+          <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
+          <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button className='navbarButton' role='loginButton' onClick={login}>Login</button>
+          <button className='navbarButton' role='signupButton' onClick={signup}>Signup</button>
+        </div>
+      );
     }
   };
 
