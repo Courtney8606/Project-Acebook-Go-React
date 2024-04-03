@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getPosts } from "../../services/posts";
+import { getPostsByUserID } from "../../services/posts";
 import Post from "../../components/Post/Post";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
@@ -29,7 +29,7 @@ export const MyPostsPage = () => {
       try {
         const token = localStorage.getItem("token");
         // Fetch posts
-        const { posts: postsData } = await getPosts(token);
+        const { posts: postsData } = await getPostsByUserID(3, token);
         setPosts(postsData);
 
         // Fetch likes for each post
