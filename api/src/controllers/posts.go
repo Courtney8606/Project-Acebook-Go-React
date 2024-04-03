@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"strconv"
 
@@ -13,10 +12,10 @@ import (
 )
 
 type JSONPost struct {
-	ID      uint      `json:"_id"`
-	Message string    `json:"message"`
-	Likes   []int     `json:"liked_user_ids"`
-	Created time.Time `json:"created_at"`
+	ID      uint   `json:"_id"`
+	Message string `json:"message"`
+	Likes   []int  `json:"liked_user_ids"`
+	Created string `json:"created_at"`
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -45,6 +44,7 @@ func GetAllPosts(ctx *gin.Context) {
 			Message: post.Message,
 			ID:      post.ID,
 			Likes:   post.Likes,
+			Created: post.CreatedAt.Format("02/01/06 15:04"),
 		})
 	}
 
