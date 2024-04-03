@@ -4,7 +4,6 @@ import { getPosts } from "../../services/posts";
 // import { getComments } from "../../services/comments";
 import Post from "../../components/Post/Post";
 import LikeButton from "../../components/LikeButton/LikeButton";
-import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import { getLikes, likeCreate, unlikeCreate } from "../../services/likes";
 import "/src/FeedPage.css";
@@ -106,7 +105,6 @@ export const FeedPage = () => {
                 onToggleLike={() => toggleLike(post._id)}
               />
             </div>
-            <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             <div className="commentsbox-css">
               {/* Attempting to insert comments input box, and display comments associated with a Post ID */}
               <CommentsBox key={`comment-${post._id}`} />
