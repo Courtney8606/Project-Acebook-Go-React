@@ -12,12 +12,10 @@ import (
 )
 
 type JSONPost struct {
-
 	ID       uint   `json:"_id"`
 	Message  string `json:"message"`
 	Likes    []int  `json:"liked_user_ids"`
 	Username string `json:"username"`
-
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -54,7 +52,6 @@ func GetAllPosts(ctx *gin.Context) {
 			ID:       post.ID,
 			Likes:    post.Likes,
 			Username: postUser.Username,
-
 		})
 	}
 
@@ -63,11 +60,6 @@ func GetAllPosts(ctx *gin.Context) {
 
 func GetPostsForUser(ctx *gin.Context) {
 	userID, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		SendInternalError(ctx, err)
-		return
-	}
-
 	if err != nil {
 		SendInternalError(ctx, err)
 		return
@@ -271,4 +263,3 @@ func UserUnlikePost(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "post unliked successfully", "userID": userID})
 }
-
