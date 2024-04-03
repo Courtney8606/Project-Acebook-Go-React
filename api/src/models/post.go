@@ -30,10 +30,12 @@ func (is IntSlice) Value() (driver.Value, error) {
 
 type Post struct {
 	gorm.Model
+
 	Message  string    `json:"message"`
 	Likes    IntSlice  `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
 	UserID   uint      `json:"user_id"`
 	Comments []Comment `gorm:"foreignKey:PostID"`
+
 }
 
 func (post *Post) Save() (*Post, error) {
@@ -84,6 +86,7 @@ func DeletePostByID(post_id int) error {
 		return err
 	}
 	return nil
+
 }
 
 func HasUserLikedPost(post Post, user_id int) bool {
@@ -93,6 +96,7 @@ func HasUserLikedPost(post Post, user_id int) bool {
 		}
 	}
 	return false
+
 }
 
 func LikePost(post_id int, user_id int) error {
@@ -101,9 +105,11 @@ func LikePost(post_id int, user_id int) error {
 	if err != nil {
 		return err
 	}
+
 	if HasUserLikedPost(likedPost, user_id) {
 		return fmt.Errorf("user has liked post already")
 	}
+
 	likedPost.Likes = append(likedPost.Likes, user_id)
 	err = Database.Save(likedPost).Error
 	if err != nil {
@@ -146,3 +152,4 @@ func removeValueFromSlice(slice []int, toRemove int) []int {
 
 	return slice
 }
+

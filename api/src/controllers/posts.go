@@ -12,10 +12,12 @@ import (
 )
 
 type JSONPost struct {
+
 	ID       uint   `json:"_id"`
 	Message  string `json:"message"`
 	Likes    []int  `json:"liked_user_ids"`
 	Username string `json:"username"`
+
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -47,10 +49,12 @@ func GetAllPosts(ctx *gin.Context) {
 			return
 		}
 		jsonPosts = append(jsonPosts, JSONPost{
+
 			Message:  post.Message,
 			ID:       post.ID,
 			Likes:    post.Likes,
 			Username: postUser.Username,
+
 		})
 	}
 
@@ -145,15 +149,18 @@ func GetLikeCount(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
+
 	// jsonPosts := make([]JSONPost, 0)
 	// jsonPosts = append(jsonPosts, JSONPost{
 	// 	Message: post.Message,
 	// 	ID:      post.ID,
 	// 	Likes:   post.Likes,
 	// })
+
 	userHasLiked := models.HasUserLikedPost(*post, userID)
 	likecount := len(post.Likes)
 	ctx.JSON(http.StatusOK, gin.H{"LikeCount": likecount, "UserHasLiked": userHasLiked, "postID": postID})
+
 }
 
 //POST route for /posts/:id/like
@@ -187,6 +194,7 @@ func UserLikePost(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
+
 	ctx.JSON(http.StatusOK, gin.H{"message": "post liked successfully", "userID": userID})
 
 }
@@ -221,3 +229,4 @@ func UserUnlikePost(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "post unliked successfully", "userID": userID})
 }
+

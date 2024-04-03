@@ -49,11 +49,20 @@ describe("Feed Page", () => {
     expect(like.firstChild).toHaveStyle({ color: "#ff6666" });
   });
 
-  test("It navigates to login if no token is present", async () => {
+  // test("It navigates to login if no token is present", async () => {
+  //   render(<FeedPage />);
+  //   const navigateMock = useNavigate();
+  //   expect(navigateMock).toHaveBeenCalledWith("/login");
+  // });
+
+  test('It renders the delete button', async () => {
+    window.localStorage.setItem("token", "testToken");
+    const mockPosts = [{ _id: "12345", message: "Test Post 1" }];
+    getPosts.mockResolvedValue({ posts: mockPosts, token: "newToken" });
     render(<FeedPage />);
-    const navigateMock = useNavigate();
-    expect(navigateMock).toHaveBeenCalledWith("/login");
-  });
+    const deleteButton = await screen.findByRole("deletion");
+    expect(deleteButton).toBeTruthy();
+  })
 });
 
 

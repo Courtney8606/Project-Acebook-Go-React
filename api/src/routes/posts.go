@@ -15,4 +15,5 @@ func setupPostRoutes(baseRouter *gin.RouterGroup) {
 	posts.POST("/:id/like", middleware.AuthenticationMiddleware, controllers.UserLikePost)
 	posts.POST("/:id/delete", middleware.AuthenticationMiddleware, controllers.DeletePost)
 	posts.POST("/:id/unlike", middleware.AuthenticationMiddleware, controllers.UserUnlikePost)
+
 }
