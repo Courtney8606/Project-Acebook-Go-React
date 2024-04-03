@@ -16,6 +16,7 @@ type JSONComment struct {
 	ID       uint   `json:"comment_id"`
 	Text     string `json:"text"`
 	Username string `json:"username"`
+	Created  string `json:"created_at"`
 }
 
 func CreateComment(ctx *gin.Context) {
@@ -92,6 +93,7 @@ func GetCommentsByPostID(ctx *gin.Context) {
 			ID:       comment.ID,
 			Text:     comment.Text,
 			Username: commentUser.Username,
+			Created:  comment.CreatedAt.Format("02/01/06 15:04"),
 		})
 	}
 
