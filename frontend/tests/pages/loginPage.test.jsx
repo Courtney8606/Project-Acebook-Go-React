@@ -49,7 +49,9 @@ describe("Login Page", () => {
   test("navigates to /posts on successful login", async () => {
     render(<LoginPage />);
 
-    login.mockResolvedValue({ status: 201 });
+    window.localStorage.setItem("token", "testToken");
+    const mockResponse = { status: 201, json: async () => ({ token: "testToken" }) };
+    login.mockResolvedValue(mockResponse);
     const navigateMock = useNavigate();
 
     await completeLoginForm();
@@ -57,16 +59,6 @@ describe("Login Page", () => {
     expect(navigateMock).toHaveBeenCalledWith("/posts");
   });
 
-  // test("sets token on successful login", async () => {
-  //   render(<LoginPage />);
-
-  //   login.mockResolvedValue({ status: 201, json: async () => ({token: "testToken"})});
-    
-
-  //   await completeLoginForm();
-
-  //   expect(window.localStorage.setItem).toHaveBeenCalledWith('token', 'testToken');
-  // });
 
   test("navigates to /login on unsuccessful login", async () => {
     render(<LoginPage />);
