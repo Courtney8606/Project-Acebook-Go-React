@@ -32,7 +32,6 @@ export const LoginPage = () => {
         await handleErrorResponse(response);
       } else {
       const data = await response.json();
-      console.log(data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("userID", data.userID);
       localStorage.setItem("username", data.username);

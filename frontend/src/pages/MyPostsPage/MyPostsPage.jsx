@@ -28,8 +28,9 @@ export const MyPostsPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        const userID = localStorage.getItem('userID');
         // Fetch posts
-        const { posts: postsData } = await getPostsByUserID(3, token);
+        const { posts: postsData } = await getPostsByUserID(userID, token);
         setPosts(postsData);
 
         // Fetch likes for each post
