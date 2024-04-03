@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,7 @@ func CreateToken(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
 
-	fmt.Println(input)
+	// fmt.Println(input)
 
 	user, err := models.FindUserByEmail(input.Email)
 	if err != nil {

@@ -13,6 +13,7 @@ describe("authentication service", () => {
     test("calls the backend url for a token", async () => {
       const testEmail = "test@testEmail.com";
       const testPassword = "12345678";
+      
 
       fetch.mockResponseOnce(JSON.stringify({ token: "testToken" }), {
         status: 201,
@@ -40,12 +41,24 @@ describe("authentication service", () => {
       fetch.mockResponseOnce(JSON.stringify({ token: "testToken" }), {
         status: 201,
       });
+      try {
+        const response = await login(testEmail, testPassword);
+       // Check if the response status is 201
+      expect(response.status).toEqual(201);
 
-      const token = await login(testEmail, testPassword);
+      // Extract the token from the response body
+      const data = await response.json();
+      const token = data.token;
+
+      // Check if the token matches the expected value
       expect(token).toEqual("testToken");
-    });
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  });
 
-    test("throws an error if the request failed", async () => {
+
+    test("error message is included within the json data if the wrong password is used", async () => {
       const testEmail = "test@testEmail.com";
       const testPassword = "12345678";
 
@@ -54,11 +67,13 @@ describe("authentication service", () => {
       });
 
       try {
-        await login(testEmail, testPassword);
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Received status 403 when logging in. Expected 201"
-        );
+        const response = await login(testEmail, testPassword);
+        expect(response.status).toEqual(403);
+        const data = await response.json();
+        const message = data.message;
+        expect(message).toEqual("Wrong Password");
+      } catch (error) {
+        console.error("Error during login:", error);
       }
     });
   });

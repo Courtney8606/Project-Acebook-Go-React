@@ -30,14 +30,18 @@ func (is IntSlice) Value() (driver.Value, error) {
 
 type Post struct {
 	gorm.Model
-	Message string   `json:"message"`
-	Likes   IntSlice `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+
+	Message  string    `json:"message"`
+	Likes    IntSlice  `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+	UserID   uint      `json:"user_id"`
+	Comments []Comment `gorm:"foreignKey:PostID"`
+
 }
 
 func (post *Post) Save() (*Post, error) {
 	post.Likes = make([]int, 0)
 	err := Database.Create(post).Error
-	fmt.Println(err)
+	// fmt.Println(err)
 	if err != nil {
 		return &Post{}, err
 	}
@@ -55,14 +59,21 @@ func (post *Post) Delete() error {
 
 func FetchAllPosts() (*[]Post, error) {
 	var posts []Post
-	err := Database.Find(&posts).Error
-
-	fmt.Println(posts)
+	err := Database.Order("created_at DESC").Find(&posts).Error
 
 	if err != nil {
 		return &[]Post{}, err
 	}
 
+	return &posts, nil
+}
+
+func FetchAllPostsForUser(user_id int) (*[]Post, error) {
+	var posts []Post
+	err := Database.Where("user_id = ?", user_id).Order("created_at DESC").Find(&posts).Error
+	if err != nil {
+		return nil, err
+	}
 	return &posts, nil
 }
 
@@ -84,6 +95,8 @@ func DeletePostByID(post_id int) error {
 	return nil
 }
 
+}
+
 func HasUserLikedPost(post Post, user_id int) bool {
 	for _, likedUserID := range post.Likes {
 		if likedUserID == user_id {
@@ -91,6 +104,7 @@ func HasUserLikedPost(post Post, user_id int) bool {
 		}
 	}
 	return false
+
 }
 
 func LikePost(post_id int, user_id int) error {
@@ -99,9 +113,11 @@ func LikePost(post_id int, user_id int) error {
 	if err != nil {
 		return err
 	}
+
 	if HasUserLikedPost(likedPost, user_id) {
 		return fmt.Errorf("user has liked post already")
 	}
+
 	likedPost.Likes = append(likedPost.Likes, user_id)
 	err = Database.Save(likedPost).Error
 	if err != nil {
@@ -144,3 +160,4 @@ func removeValueFromSlice(slice []int, toRemove int) []int {
 
 	return slice
 }
+

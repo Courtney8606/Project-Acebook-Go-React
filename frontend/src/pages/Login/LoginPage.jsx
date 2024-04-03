@@ -6,18 +6,40 @@ import { login } from "../../services/authentication";
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleErrorResponse = async (response) => {
+    try {
+      let data = await response.json();
+       if (data.message === "Password incorrect") {
+        setErrorMessage("Password is incorrect. Please try again.");
+        document.getElementById("password").value = "";
+      } else {
+        setErrorMessage("An error has occurred. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Email address not found. Please try a different email address or sign up.");
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = await login(email, password);
-      localStorage.setItem("token", token);
+      const response = await login(email, password);
+      if (response.status != 201) {
+        await handleErrorResponse(response);
+      } else {
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
       navigate("/posts");
-    } catch (err) {
-      console.error(err);
-      navigate("/login");
     }
+    } catch (err) {
+      console.error("Error",err);
+      navigate("/login");
+    
+  }
   };
 
   const handleEmailChange = (event) => {
@@ -58,6 +80,7 @@ export const LoginPage = () => {
           type="submit"
           value="Submit"
         />
+         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </>
   );
