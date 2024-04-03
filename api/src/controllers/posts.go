@@ -61,6 +61,48 @@ func GetAllPosts(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"posts": jsonPosts, "token": token})
 }
 
+func GetPostsForUser(ctx *gin.Context) {
+	userID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	posts, err := models.FetchAllPostsForUser(userID)
+
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	token, _ := auth.GenerateToken(uint(userID))
+	user, err := models.FindUser(strconv.Itoa(userID))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	// Convert posts to JSON Structs
+	jsonPosts := make([]JSONPost, 0)
+	for _, post := range *posts {
+		jsonPosts = append(jsonPosts, JSONPost{
+			Message:  post.Message,
+			ID:       post.ID,
+			Likes:    post.Likes,
+			Username: user.Username,
+		})
+	}
+	if len(jsonPosts) == 0 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "This user has no posts"})
+		return
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"posts": jsonPosts, "token": token})
+	}
+}
+
 type createPostRequestBody struct {
 	Message string
 }

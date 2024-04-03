@@ -41,7 +41,7 @@ type Post struct {
 func (post *Post) Save() (*Post, error) {
 	post.Likes = make([]int, 0)
 	err := Database.Create(post).Error
-	fmt.Println(err)
+	// fmt.Println(err)
 	if err != nil {
 		return &Post{}, err
 	}
@@ -59,14 +59,21 @@ func (post *Post) Delete() error {
 
 func FetchAllPosts() (*[]Post, error) {
 	var posts []Post
-	err := Database.Find(&posts).Error
-
-	fmt.Println(posts)
+	err := Database.Order("created_at DESC").Find(&posts).Error
 
 	if err != nil {
 		return &[]Post{}, err
 	}
 
+	return &posts, nil
+}
+
+func FetchAllPostsForUser(user_id int) (*[]Post, error) {
+	var posts []Post
+	err := Database.Where("user_id = ?", user_id).Order("created_at DESC").Find(&posts).Error
+	if err != nil {
+		return nil, err
+	}
 	return &posts, nil
 }
 

@@ -12,7 +12,7 @@ var Database *gorm.DB
 
 func OpenDatabaseConnection() {
 	connection_string := os.Getenv("POSTGRES_URL")
-	fmt.Println(connection_string)
+	// fmt.Println(connection_string)
 
 	var err error
 	Database, err = gorm.Open(postgres.Open(connection_string), &gorm.Config{})
