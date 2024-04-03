@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postCreate } from "../../services/createpost";
-import "/src/CreatePostPage.css";
+import { commentCreate } from "../../services/createcomment";
+import "/src/CommentsBox.css";
 
-export const CreatePostPage = () => {
+export const CreateComment = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
@@ -14,18 +14,17 @@ export const CreatePostPage = () => {
     const limitedValue = inputValue.slice(0, maxnumber);
     setValue(limitedValue);
     if (inputValue.length > maxnumber) {
-      alert(`Your message is too long, the limit is ${maxnumber} characters`);
+      alert(`Your comment is too long, the limit is ${maxnumber} characters`);
     }
   };
 
   const handleSubmit = async (event) => {
     const token = localStorage.getItem("token");
-    console.log(token);
     event.preventDefault();
-    const messageInput = document.getElementById("message");
-    const messageValue = messageInput.value;
+    const commentInput = document.getElementById("comment");
+    const commentValue = commentInput.value;
     if (token) {
-      postCreate(messageValue, token);
+      commentCreate(commentValue, token);
       navigate("/posts");
     } else {
       navigate("/login");
@@ -34,26 +33,27 @@ export const CreatePostPage = () => {
 
   return (
     <>
-      <form className="post-form" onSubmit={handleSubmit}>
-        <h1 className="post-title">Create Post</h1>
-        <div className="icon-post">
-          <i className="fas fa-user-circle"></i>
+      <form className="commentform" onSubmit={handleSubmit}>
+        <label htmlFor="comment"></label>
+        <div className="icon-comment">
+          <span className="comment-icon">&#x1F4AC;</span>
         </div>
-        <label htmlFor="message">Enter your message:</label>
         <br></br>
         <input
-          style={{ width: "300px", height: "100px", paddingLeft: "20px" }}
-          id="message"
+          style={{ width: "300px", height: "50px", paddingLeft: "20px" }}
+          id="comment"
           type="text"
           value={value}
           onChange={handleChange}
+          placeholder="Enter your comment"
         />
         <button
-          className="create-post-button"
+          className="create-comment-button"
           role="submit-button"
           type="submit"
           id="submit"
           value="Submit"
+          alt="comment-button"
         >
           Submit
         </button>
@@ -61,3 +61,5 @@ export const CreatePostPage = () => {
     </>
   );
 };
+
+export default CreateComment;

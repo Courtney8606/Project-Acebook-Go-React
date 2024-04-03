@@ -9,8 +9,13 @@ import NavigationBar from "../../src/components/NavigationBar/NavigationBar";
 vi.mock("react-router-dom", () => {
   const navigateMock = vi.fn();
   const useNavigateMock = () => navigateMock;
-  return { useNavigate: useNavigateMock };
+  const LinkMock = ({ to, children }) => <a href={to}>{children}</a>;
+  return { 
+  useNavigate: useNavigateMock,
+  Link: LinkMock
+  };
 });
+
 
 describe("NavigationBar render", () => {
   test("renders a logged in navigation bar when user is logged in", async () => {

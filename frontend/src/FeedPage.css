@@ -1,11 +1,18 @@
 .post-object {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border: 5px solid #f1f1f1;
   border-radius: 10px;
-  column-gap: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
   margin-bottom: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.commentsbox-css {
+  display: flex;
+  justify-content: end;
+}
+
+.like-css {
+  display: flex;
+  justify-content: flex-end;
+  height: 20px;
 }

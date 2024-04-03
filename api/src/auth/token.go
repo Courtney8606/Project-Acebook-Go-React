@@ -14,11 +14,12 @@ type AuthToken struct {
 	UserID    string
 }
 
-func GenerateToken(userID string) (string, error) {
+func GenerateToken(userID uint) (string, error) {
 	secret := os.Getenv("JWT_SECRET")
 	now := time.Now()
+	userString := fmt.Sprint(userID)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": userID,
+		"sub": userString,
 		"iat": jwt.NewNumericDate(now),
 		"exp": jwt.NewNumericDate(now.Add(time.Minute * 10)),
 	})
@@ -35,7 +36,6 @@ func DecodeToken(tokenString string) (AuthToken, error) {
 	if err != nil {
 		return AuthToken{}, err
 	}
-
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		return AuthToken{}, fmt.Errorf("something is wrong")

@@ -12,9 +12,12 @@ import (
 )
 
 type JSONPost struct {
-	ID      uint   `json:"_id"`
-	Message string `json:"message"`
-	Likes   []int  `json:"liked_user_ids"`
+
+	ID       uint   `json:"_id"`
+	Message  string `json:"message"`
+	Likes    []int  `json:"liked_user_ids"`
+	Username string `json:"username"`
+
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -27,15 +30,31 @@ func GetAllPosts(ctx *gin.Context) {
 
 	val, _ := ctx.Get("userID")
 	userID := val.(string)
-	token, _ := auth.GenerateToken(userID)
+	var userIDUint uint64
+	userIDUint, err = strconv.ParseUint(userID, 10, 64)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
 
+	token, _ := auth.GenerateToken(uint(userIDUint))
 	// Convert posts to JSON Structs
 	jsonPosts := make([]JSONPost, 0)
 	for _, post := range *posts {
+
+		postUserID := strconv.FormatUint(uint64(post.UserID), 10)
+		postUser, err := models.FindUser(postUserID)
+		if err != nil {
+			SendInternalError(ctx, err)
+			return
+		}
 		jsonPosts = append(jsonPosts, JSONPost{
-			Message: post.Message,
-			ID:      post.ID,
-			Likes:   post.Likes,
+
+			Message:  post.Message,
+			ID:       post.ID,
+			Likes:    post.Likes,
+			Username: postUser.Username,
+
 		})
 	}
 
@@ -49,6 +68,7 @@ type createPostRequestBody struct {
 func CreatePost(ctx *gin.Context) {
 	var requestBody createPostRequestBody
 	err := ctx.BindJSON(&requestBody)
+	// fmt.Println(&requestBody)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err})
@@ -63,8 +83,18 @@ func CreatePost(ctx *gin.Context) {
 		return
 	}
 
+	val, _ := ctx.Get("userID")
+	userID := val.(string)
+	var userIDUint uint64
+	userIDUint, err = strconv.ParseUint(userID, 10, 64)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
 	newPost := models.Post{
 		Message: requestBody.Message,
+		UserID:  uint(userIDUint),
 	}
 
 	_, err = newPost.Save()
@@ -73,9 +103,7 @@ func CreatePost(ctx *gin.Context) {
 		return
 	}
 
-	val, _ := ctx.Get("userID")
-	userID := val.(string)
-	token, _ := auth.GenerateToken(userID)
+	token, _ := auth.GenerateToken(uint(userIDUint))
 
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Post created", "token": token})
 }
@@ -114,14 +142,25 @@ func GetLikeCount(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
+
+	val, _ := ctx.Get("userID")
+	userID, err := strconv.Atoi(val.(string))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
 	// jsonPosts := make([]JSONPost, 0)
 	// jsonPosts = append(jsonPosts, JSONPost{
 	// 	Message: post.Message,
 	// 	ID:      post.ID,
 	// 	Likes:   post.Likes,
 	// })
+
+	userHasLiked := models.HasUserLikedPost(*post, userID)
 	likecount := len(post.Likes)
-	ctx.JSON(http.StatusOK, gin.H{"LikeCount": likecount})
+	ctx.JSON(http.StatusOK, gin.H{"LikeCount": likecount, "UserHasLiked": userHasLiked, "postID": postID})
+
 }
 
 //POST route for /posts/:id/like
@@ -133,9 +172,19 @@ func UserLikePost(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
-	userID := ctx.GetInt("userID")
-	// userID := val.(stin)
-	//token, _ := auth.GenerateToken(userID)
+
+	val, _ := ctx.Get("userID")
+	userID, err := strconv.Atoi(val.(string))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	_, err = models.FetchPostById(postID)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
 	err = models.LikePost(postID, userID)
 	if err == fmt.Errorf("user has liked post already") {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "User has already liked this post"})
@@ -145,6 +194,39 @@ func UserLikePost(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "post liked successfully"})
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "post liked successfully", "userID": userID})
 
 }
+
+func UserUnlikePost(ctx *gin.Context) {
+	postID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	val, _ := ctx.Get("userID")
+	userID, err := strconv.Atoi(val.(string))
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	_, err = models.FetchPostById(postID)
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+
+	err = models.UnlikePost(postID, userID)
+	if err == fmt.Errorf("user hasn't liked post") {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "User has already liked this post"})
+		return
+	}
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"message": "post unliked successfully", "userID": userID})
+}
+

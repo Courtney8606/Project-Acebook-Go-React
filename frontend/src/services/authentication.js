@@ -18,20 +18,19 @@ export const login = async (email, password) => {
   const response = await fetch(`${BACKEND_URL}/tokens`, requestOptions);
 
   // docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
-  if (response.status === 201) {
-    let data = await response.json();
-    return data.token;
-  } else {
-    throw new Error(
-      `Received status ${response.status} when logging in. Expected 201`
-    );
-  }
+  // if (response.status === 201) {
+  //   let data = await response.json();
+  //   return data.token;
+  // } else {
+    return response;
+  // }
 };
 
-export const signup = async (email, password) => {
+export const signup = async (email, password, username) => {
   const payload = {
     email: email,
     password: password,
+    username: username
   };
 
   const requestOptions = {
@@ -43,13 +42,23 @@ export const signup = async (email, password) => {
   };
 
   let response = await fetch(`${BACKEND_URL}/users`, requestOptions);
+  const data = response.json()
+ 
+
+  // if (response.status === 201) {
+  //       return;
+  //     } else {
+  return response;
+ 
+
+  // }
+}
 
   // docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
-  if (response.status === 201) {
-    return;
-  } else {
-    throw new Error(
-      `Received status ${response.status} when signing up. Expected 201`
-    );
-  }
-};
+//   if (response.status === 201) {
+//     return;
+//   } else {
+//     throw new Error(
+//       `Received status ${response.status} when signing up. Expected 201`
+//     );
+//   }

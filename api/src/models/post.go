@@ -30,17 +30,31 @@ func (is IntSlice) Value() (driver.Value, error) {
 
 type Post struct {
 	gorm.Model
-	Message string   `json:"message"`
-	Likes   IntSlice `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+
+	Message  string    `json:"message"`
+	Likes    IntSlice  `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
+	UserID   uint      `json:"user_id"`
+	Comments []Comment `gorm:"foreignKey:PostID"`
+
 }
 
 func (post *Post) Save() (*Post, error) {
+	post.Likes = make([]int, 0)
 	err := Database.Create(post).Error
+	fmt.Println(err)
 	if err != nil {
 		return &Post{}, err
 	}
 
 	return post, nil
+}
+
+func (post *Post) Delete() error {
+	err := Database.Delete(post).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func FetchAllPosts() (*[]Post, error) {
@@ -75,17 +89,27 @@ func DeletePostByID(post_id int) error {
 
 }
 
+func HasUserLikedPost(post Post, user_id int) bool {
+	for _, likedUserID := range post.Likes {
+		if likedUserID == user_id {
+			return true
+		}
+	}
+	return false
+
+}
+
 func LikePost(post_id int, user_id int) error {
 	var likedPost Post
 	err := Database.First(&likedPost, post_id).Error
 	if err != nil {
 		return err
 	}
-	for _, likedUserID := range likedPost.Likes {
-		if likedUserID == user_id {
-			return fmt.Errorf("user has liked post already")
-		}
-	} //by this point, we know the user has NOT liked the given post
+
+	if HasUserLikedPost(likedPost, user_id) {
+		return fmt.Errorf("user has liked post already")
+	}
+
 	likedPost.Likes = append(likedPost.Likes, user_id)
 	err = Database.Save(likedPost).Error
 	if err != nil {
@@ -93,3 +117,39 @@ func LikePost(post_id int, user_id int) error {
 	}
 	return nil
 }
+
+func UnlikePost(post_id int, user_id int) error {
+	var likedPost Post
+	err := Database.First(&likedPost, post_id).Error
+	if err != nil {
+		return err
+	}
+	if !HasUserLikedPost(likedPost, user_id) {
+		return fmt.Errorf("user hasn't liked post")
+	}
+	likedPost.Likes = removeValueFromSlice(likedPost.Likes, user_id)
+	err = Database.Save(likedPost).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func removeValueFromSlice(slice []int, toRemove int) []int {
+	index := -1
+	for i, value := range slice {
+		if value == toRemove {
+			index = i
+			break
+		}
+	}
+
+	if index != -1 {
+		result := append([]int{}, slice[:index]...) //appends all the values up to
+		result = append(result, slice[index+1:]...) //appends all the value after
+		return result
+	}
+
+	return slice
+}
+

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavigationBar.css";
 
 // NavigationBar will render at the top of the page. The <nav>
@@ -15,7 +15,11 @@ const NavigationBar = () => {
   };
 
   const login = () => {
-    navigate('/login');
+    if (token) {
+      navigate('/posts');
+    } else {
+      navigate('/login');
+    };
   };
 
   const signup = () => {
@@ -52,9 +56,9 @@ const NavigationBar = () => {
   return (
     <nav>
       <div className='navbarBox'>
-        <div className='navbarLogo'>
+        <Link to="/" className="navbarLogo" id='navbarLogo'>
           <h1>Acebook</h1>
-        </div>
+        </Link>
         <div className='navbarButtons'>
           {renderButtons()}
         </div>

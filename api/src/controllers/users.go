@@ -21,12 +21,11 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	if newUser.Email == "" || newUser.Password == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Must supply username and password"})
+	if newUser.Email == "" || newUser.Password == "" || newUser.Username == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Must supply email, username and password"})
 		return
 	} else {
-		email := newUser.Email
-		verify, _ := verifier.Verify(email)
+		verify, _ := verifier.Verify(newUser.Email)
 		if !verify.Syntax.Valid {
 			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Invalid email address"})
 			return
@@ -36,6 +35,11 @@ func CreateUser(ctx *gin.Context) {
 				ctx.JSON(http.StatusBadRequest, gin.H{"message": "Email address already in use"})
 				return
 			}
+		}
+		existingUser, _ := models.FindUserByUsername(newUser.Username)
+		if existingUser.Username != "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Username already in use"})
+			return
 		}
 		_, err = newUser.Save()
 		if err != nil {

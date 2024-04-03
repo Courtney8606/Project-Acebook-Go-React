@@ -1,0 +1,32 @@
+.commentform {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 10px;
+  padding-left: 10px;
+  width: 100%;
+}
+
+#comment {
+  width: 100%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: left;
+  height: 30px;
+}
+
+.create-comment-button {
+  background-color: #4286f4;
+  color: white;
+  padding: 14px 0;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  cursor: grab;
+  width: 10%;
+}
+
+.create-comment-button:hover {
+  opacity: 0.8;
+}
