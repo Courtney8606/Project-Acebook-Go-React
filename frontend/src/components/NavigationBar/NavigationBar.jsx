@@ -34,10 +34,16 @@ const NavigationBar = () => {
     navigate('/createpost');
   };
 
+  const myPosts = () => {
+    navigate('/myposts');
+  };
+
+
   const renderButtons = () => {
     if (token !== null) {
       return (
         <div>
+          <button className='navbarButton' role='myPostsButton' onClick={myPosts}>My posts</button>
           <button className='navbarButton' role='postsButton' onClick={posts}>Posts</button>
           <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
           <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
