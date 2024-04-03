@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPosts } from "../../services/posts";
-// import { getComments } from "../../services/comments";
+import { getComments, commentCreate } from "../../services/comments";
 import Post from "../../components/Post/Post";
+import UserComment from "../../components/Comment/Comment";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
@@ -14,10 +15,9 @@ export const FeedPage = () => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState([]);
   const navigate = useNavigate();
-
-  // New addition - set Comments
-  // const [comments, setComments] = useState([]);
+  
 
   const token = localStorage.getItem("token");
   if (!token) {
@@ -33,17 +33,22 @@ export const FeedPage = () => {
         const { posts: postsData } = await getPosts(token);
         setPosts(postsData);
 
-        // Fetch likes for each post
+        // Fetch likes and comments for each post
         const likesData = {};
         const likedData = {};
+        const commentsData = {};
         for (const post of postsData) {
           const likeData = await getLikes(post._id, token);
+          const commentData = await getComments(post._id, token);
           likesData[post._id] = likeData.LikeCount;
           likedData[post._id] = likeData.UserHasLiked;
-        }
+          commentsData[post._id] = commentData.comments;
+        };
 
         setLikes(likesData);
         setLiked(likedData);
+        setComments(commentsData);
+
       } catch (error) {
         console.error(error);
         navigate("/login");
@@ -108,16 +113,20 @@ export const FeedPage = () => {
             </div>
             <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             <div className="commentsbox-css">
-              {/* Attempting to insert comments input box, and display comments associated with a Post ID */}
-              <CommentsBox key={`comment-${post._id}`} />
-              {/* {comments
-              .filter((comment) => comment.post_id === post._id)
-              .map((filteredComment) => (
-                <Comment
-                  comment={filteredComment}
-                  key={filteredComment.comment._id}
+              <CommentsBox 
+              key={`comment-${post._id}`}
+              postid={post._id}
+              /> 
+            </div>
+            <div>
+              {comments[post._id] && comments[post._id].map((comment) => (
+                <UserComment 
+                  key={comment.comment_id}
+                  postid={post._id}
+                  comment={comment.text}
+                  username={comment.username}
                 />
-              ))} */}
+              ))}
             </div>
           </div>
         ))}

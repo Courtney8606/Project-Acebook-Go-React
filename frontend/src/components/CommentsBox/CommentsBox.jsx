@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { commentCreate } from "../../services/createcomment";
+import { commentCreate, getComments } from "../../services/comments";
 import "/src/CommentsBox.css";
 
-export const CreateComment = () => {
+export const CreateComment = (props) => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
-  const maxnumber = 280;
+  const maxnumber = 20;
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
@@ -21,10 +21,10 @@ export const CreateComment = () => {
   const handleSubmit = async (event) => {
     const token = localStorage.getItem("token");
     event.preventDefault();
-    const commentInput = document.getElementById("comment");
+    const commentInput = document.getElementById(`comment-${props.postid}`);
     const commentValue = commentInput.value;
     if (token) {
-      commentCreate(commentValue, token);
+      await commentCreate(commentValue, props.postid, token);
       navigate("/posts");
     } else {
       navigate("/login");
@@ -41,7 +41,7 @@ export const CreateComment = () => {
         <br></br>
         <input
           style={{ width: "300px", height: "50px", paddingLeft: "20px" }}
-          id="comment"
+          id={`comment-${props.postid}`}
           type="text"
           value={value}
           onChange={handleChange}
