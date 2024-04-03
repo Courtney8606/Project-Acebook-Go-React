@@ -8,11 +8,28 @@
   margin-top: 20px;
 }
 
+.profilePicture {
+  height: 50px;
+  width: 160px;
+  margin-left: 8px;
+  margin-right: 10px;
+}
+
 .icon-posts {
-  font-size: 50px;
+  font-size: 70px;
   display: flex;
   justify-content: center;
   color: #4286f4;
+}
+
+.userinfo {
+  text-align: left;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.message-box {
+  width: 100%;
 }
 
 .feed-message {
