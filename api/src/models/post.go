@@ -82,6 +82,7 @@ func DeletePostByID(post_id int) error {
 		return err
 	}
 	return nil
+}
 
 func HasUserLikedPost(post Post, user_id int) bool {
 	for _, likedUserID := range post.Likes {
