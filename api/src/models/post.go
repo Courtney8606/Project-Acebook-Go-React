@@ -35,7 +35,6 @@ type Post struct {
 	Likes    IntSlice  `gorm:"type:json;column:liked_user_ids" json:"liked_user_ids"`
 	UserID   uint      `json:"user_id"`
 	Comments []Comment `gorm:"foreignKey:PostID"`
-
 }
 
 func (post *Post) Save() (*Post, error) {
@@ -93,7 +92,6 @@ func DeletePostByID(post_id int) error {
 		return err
 	}
 	return nil
-
 }
 
 func HasUserLikedPost(post Post, user_id int) bool {
@@ -159,4 +157,3 @@ func removeValueFromSlice(slice []int, toRemove int) []int {
 
 	return slice
 }
-

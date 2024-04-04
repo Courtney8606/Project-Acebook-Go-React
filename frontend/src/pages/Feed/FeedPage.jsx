@@ -118,16 +118,14 @@ export const FeedPage = () => {
             <div className="post-css">
               <Post post={post} />
             </div>
-            <div className="like-css">
+            <div className="like-delete-buttons">
               <LikeButton
                 postid={post._id}
                 liked={liked[post._id]}
                 likes={likes[post._id]}
                 onToggleLike={() => toggleLike(post._id)}
               />
-              <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             </div>
-      
             <div className="commentsbox-css">
               <CommentsBox 
               key={`comment-${post._id}`}

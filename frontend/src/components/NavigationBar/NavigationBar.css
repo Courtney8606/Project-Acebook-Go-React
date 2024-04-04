@@ -11,8 +11,6 @@
   border-bottom-width: 8px;
   border-left-width: 0px;
 
-  /* margin properties */
-  margin-bottom: 20px;
 }
 
 .navbarLogo {
@@ -67,4 +65,10 @@ img {
 .navbarButton:hover {
   background-color: white;
   color: var(--main-color);
+}
+
+.signedInInfo {
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+  text-align: right;
+  margin-top: 4px;
 }

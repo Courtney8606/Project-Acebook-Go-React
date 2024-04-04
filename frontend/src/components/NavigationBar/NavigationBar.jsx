@@ -6,11 +6,14 @@ import "./NavigationBar.css";
 const NavigationBar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   // Set functions for the different buttons on the navbar
   const logout = () => {
-    // Removes the stored login token from browser's localStorage
+    // Removes the stored login ifno from browser's localStorage
     localStorage.removeItem('token')
+    localStorage.removeItem('userID')
+    localStorage.removeItem('username')
     navigate("/login");
   };
 
@@ -34,10 +37,16 @@ const NavigationBar = () => {
     navigate('/createpost');
   };
 
+  const myPosts = () => {
+    navigate('/myposts');
+  };
+
+
   const renderButtons = () => {
     if (token !== null) {
       return (
         <div>
+          <button className='navbarButton' role='myPostsButton' onClick={myPosts}>My posts</button>
           <button className='navbarButton' role='postsButton' onClick={posts}>Posts</button>
           <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
           <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>
@@ -54,16 +63,21 @@ const NavigationBar = () => {
   };
 
   return (
-    <nav>
-      <div className='navbarBox'>
-        <Link to="/" className="navbarLogo" id='navbarLogo'>
-          <h1>Acebook</h1>
-        </Link>
-        <div className='navbarButtons'>
-          {renderButtons()}
+    <div>
+      <nav>
+        <div className='navbarBox'>
+          <Link to="/" className="navbarLogo" id='navbarLogo'>
+            <h1>Acebook</h1>
+          </Link>
+          <div className='navbarButtons'>
+            {renderButtons()}
+          </div>
         </div>
-      </div>
-    </nav>
+        <div className='signedInInfo'>
+          {username !== null ? `Signed in as ${username}` : null}
+        </div>
+      </nav>
+    </div>
   );
 };
 

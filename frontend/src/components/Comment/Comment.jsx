@@ -1,4 +1,4 @@
-import "/src/Comment.css";
+import "/src/comment.css";
 
 const UserComment = (props) => {
   return (
