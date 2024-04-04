@@ -12,13 +12,12 @@ Acebook is a social media platform designed to allow users to post, comment and 
 
 ### Key Features
 
-1. **User Authentication**: Acebook provides user authentication, allowing users to sign in to their accounts and log out when they're done. This ensures that only authorised users can access their accounts and interact with the platform.
+1. **User Authentication**: Acebook provides user authentication, allowing users to sign in to their accounts and log out when they're done. This ensures that only authorised users can access their accounts and interact with the platform. Users are also given a username which is displayed alongside posts in their feed and also on their post viewing page.
 
-2. **Post Creation and Interaction**: Users can create posts to share their thoughts. They can also like, comment on, and view the likes/comments of their own posts and posts by other users.
+2. **Post Creation and Interaction**: Users can create posts to share their thoughts. Posts and comments have a date/time stamp are displayed in descending order, with the most recent post/comment appearing first. Users also have a user page which displays all their posts on their page. They can also like, comment on, and view the likes/comments of their own posts and posts by other users.
 
 3. **Post Management**: Users have the ability to manage their posts by deleting them if needed. They can also unlike posts they've previously liked and delete comments they've made on posts.
 
-4. **Account Deletion**: Users can choose to delete their Acebook accounts if they no longer wish to use the platform. 
 
 ### Project Goals
 
