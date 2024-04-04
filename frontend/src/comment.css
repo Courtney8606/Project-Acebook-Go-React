@@ -1,0 +1,33 @@
+.comment {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 10px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .icon-comment {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4286f4;
+  }
+  
+  .feed-comment {
+    width: 100%;
+    padding: 16px 8px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 12px;
+  }
+  
+  .username {
+    font-size: 12px;
+    margin-left: 60%;
+  }

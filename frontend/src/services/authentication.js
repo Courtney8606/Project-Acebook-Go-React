@@ -42,7 +42,6 @@ export const signup = async (email, password, username) => {
   };
 
   let response = await fetch(`${BACKEND_URL}/users`, requestOptions);
-  const data = response.json()
  
 
   // if (response.status === 201) {
