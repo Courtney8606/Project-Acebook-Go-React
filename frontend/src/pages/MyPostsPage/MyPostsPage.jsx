@@ -6,7 +6,9 @@ import LikeButton from "../../components/LikeButton/LikeButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import { getLikes, likeCreate, unlikeCreate } from "../../services/likes";
+import ProfileBox from "../../components/Profile/Profile";
 import "/src/FeedPage.css";
+import "../../components/Profile/Profile.css";
 
 export const MyPostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -91,6 +93,9 @@ export const MyPostsPage = () => {
 
   return (
     <>
+      <div className="profile-container">
+        <ProfileBox />
+      </div>
       <h1>My posts</h1>
       <div className="feed" role="feed">
         {posts.filter(post => !post.deletedAt).map((post) => (
