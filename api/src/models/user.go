@@ -6,14 +6,15 @@ import (
 
 type User struct {
 	gorm.Model
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Username string `json:"username"`
-	Posts    []Post `gorm:"foreignKey:UserID"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Username   string `json:"username"`
+	Posts      []Post `gorm:"foreignKey:UserID"`
+	ProfilePic string `json:"profile_pic_filename"`
 }
 
 func (user *User) Save() (*User, error) {
-	err := Database.Create(user).Error
+	err := Database.Save(user).Error
 	if err != nil {
 		return &User{}, err
 	}
