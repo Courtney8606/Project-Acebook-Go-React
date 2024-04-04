@@ -6,7 +6,7 @@ const Post = (props) => {
       <div className="icon-posts">
         <i className="fas fa-user-circle"></i>
       </div>
-      <article className="feed-message" key={props.post._id}>
+      <article role='posting' className="feed-message" key={props.post._id}>
         {props.post.message}
       </article>
     </div>

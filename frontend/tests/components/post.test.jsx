@@ -7,7 +7,7 @@ describe("Post", () => {
     const testPost = { _id: "123", message: "test message" };
     render(<Post post={testPost} />);
 
-    const article = screen.getByRole("article");
+    const article = screen.getByRole("posting");
     expect(article.textContent).toBe("test message");
   });
 });
