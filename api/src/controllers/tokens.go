@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/makersacademy/go-react-acebook-template/api/src/auth"
@@ -37,5 +38,5 @@ func CreateToken(ctx *gin.Context) {
 		SendInternalError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"token": token, "message": "OK"})
+	ctx.JSON(http.StatusCreated, gin.H{"token": token, "message": "OK", "userID": strconv.FormatUint(uint64(user.ID), 10), "username": user.Username})
 }
