@@ -4,6 +4,8 @@ import { getPostsByUserID } from "../../services/posts";
 import Post from "../../components/Post/Post";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
+import { getComments, commentCreate } from "../../services/comments";
+import UserComment from "../../components/Comment/Comment";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import { getLikes, likeCreate, unlikeCreate } from "../../services/likes";
 import ProfileBox from "../../components/Profile/Profile";
@@ -14,6 +16,7 @@ export const MyPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -38,14 +41,19 @@ export const MyPostsPage = () => {
         // Fetch likes for each post
         const likesData = {};
         const likedData = {};
+        const commentsData = {};
         for (const post of postsData) {
           const likeData = await getLikes(post._id, token);
+          const commentData = await getComments(post._id, token);
           likesData[post._id] = likeData.LikeCount;
           likedData[post._id] = likeData.UserHasLiked;
+          commentsData[post._id] = commentData.comments;
         }
 
         setLikes(likesData);
         setLiked(likedData);
+        setComments(commentsData);
+
       } catch (error) {
         console.error(error);
         navigate("/login");
@@ -61,6 +69,20 @@ export const MyPostsPage = () => {
     return <div>Loading...</div>; // Render loading indicator
   }
 
+  const handleCommentCreate = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const updatedCommentsData = {};
+      for (const post of posts) {
+        const commentData = await getComments(post._id, token);
+        updatedCommentsData[post._id] = commentData.comments;
+      }
+      setComments(updatedCommentsData);
+    } catch (error) {
+      console.error(error);
+      navigate("/login");
+    }
+  };
   const toggleLike = async (post_id) => {
     try {
       const token = localStorage.getItem("token");
@@ -113,16 +135,21 @@ export const MyPostsPage = () => {
             </div>
             <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             <div className="commentsbox-css">
-              {/* Attempting to insert comments input box, and display comments associated with a Post ID */}
-              <CommentsBox key={`comment-${post._id}`} />
-              {/* {comments
-              .filter((comment) => comment.post_id === post._id)
-              .map((filteredComment) => (
-                <Comment
-                  comment={filteredComment}
-                  key={filteredComment.comment._id}
+              <CommentsBox 
+              key={`comment-${post._id}`}
+              postid={post._id}
+              onCommentCreate={handleCommentCreate}
+              /> 
+            </div>
+            <div>
+              {comments[post._id] && comments[post._id].map((comment) => (
+                <UserComment 
+                  key={comment.comment_id}
+                  postid={post._id}
+                  comment={comment.text}
+                  username={comment.username}
                 />
-              ))} */}
+              ))}
             </div>
           </div>
         ))}

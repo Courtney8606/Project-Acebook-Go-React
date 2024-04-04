@@ -17,6 +17,9 @@ export const CreatePostPage = () => {
     if (inputValue.length > maxnumber) {
       setErrorMessage(`Your message is too long, the limit is ${maxnumber} characters`);
     }
+    else {
+      setErrorMessage(""); 
+  }
   };
 
 
@@ -67,7 +70,7 @@ export const CreatePostPage = () => {
         </div>
         <label htmlFor="message">Enter your message:</label>
         <br></br>
-        <input
+        <textarea
           style={{ width: "300px", height: "100px", paddingLeft: "20px" }}
           id="message"
           type="text"

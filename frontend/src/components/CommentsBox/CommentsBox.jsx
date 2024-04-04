@@ -6,6 +6,7 @@ import "/src/CommentsBox.css";
 
 export const CreateComment = (props) => {
   const [value, setValue] = useState("");
+  const [errorMessage, seterrorMessage] = useState("");
   const navigate = useNavigate();
 
   const maxnumber = 20;
@@ -15,9 +16,12 @@ export const CreateComment = (props) => {
     const limitedValue = inputValue.slice(0, maxnumber);
     setValue(limitedValue);
     if (inputValue.length > maxnumber) {
-      alert(`Your comment is too long, the limit is ${maxnumber} characters`);
+      seterrorMessage(`Your comment is too long, the limit is ${maxnumber} characters`);
     }
-  };
+    else {
+      seterrorMessage(""); 
+  }
+}
 
   const handleSubmit = async (event) => {
     const token = localStorage.getItem("token");
@@ -27,7 +31,7 @@ export const CreateComment = (props) => {
     if (token) {
       await commentCreate(commentValue, props.postid, token);
       props.onCommentCreate();
-      navigate("/posts");
+      // navigate("/posts");
     } else {
       navigate("/login");
     }
@@ -49,6 +53,7 @@ export const CreateComment = (props) => {
           onChange={handleChange}
           placeholder="Enter your comment"
         />
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button
           className="create-comment-button"
           role="submit-button"

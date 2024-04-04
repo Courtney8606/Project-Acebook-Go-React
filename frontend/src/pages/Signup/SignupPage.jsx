@@ -111,8 +111,9 @@ export const SignupPage = () => {
           type="submit"
           value="Submit"
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        
       </form>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
    
     </>
   );
