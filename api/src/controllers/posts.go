@@ -20,17 +20,17 @@ type JSONPost struct {
 }
 
 func GetAllPosts(ctx *gin.Context) {
-	posts, err := models.FetchAllPosts()
+	posts, _ := models.FetchAllPosts()
 
-	if err != nil {
-		SendInternalError(ctx, err)
-		return
-	}
+	// if err != nil {
+	// 	SendInternalError(ctx, err)
+	// 	return
+	// }
 
 	val, _ := ctx.Get("userID")
 	userID := val.(string)
 	var userIDUint uint64
-	userIDUint, err = strconv.ParseUint(userID, 10, 64)
+	userIDUint, err := strconv.ParseUint(userID, 10, 64)
 	if err != nil {
 		SendInternalError(ctx, err)
 		return
