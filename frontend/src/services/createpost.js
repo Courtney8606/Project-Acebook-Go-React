@@ -20,10 +20,5 @@ export const postCreate = async (message, token) => {
   console.log(response.status);
 
   // docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
-  if (response.status !== 201) {
-    throw new Error("Unable to fetch posts");
-  }
-
-  const data = await response.json();
-  return data;
+  return response
 };

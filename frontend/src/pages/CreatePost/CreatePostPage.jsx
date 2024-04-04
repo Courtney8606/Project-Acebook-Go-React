@@ -5,6 +5,7 @@ import "/src/CreatePostPage.css";
 
 export const CreatePostPage = () => {
   const [value, setValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const maxnumber = 280;
@@ -14,9 +15,26 @@ export const CreatePostPage = () => {
     const limitedValue = inputValue.slice(0, maxnumber);
     setValue(limitedValue);
     if (inputValue.length > maxnumber) {
-      alert(`Your message is too long, the limit is ${maxnumber} characters`);
+      setErrorMessage(`Your message is too long, the limit is ${maxnumber} characters`);
     }
   };
+
+
+  const handleErrorResponse = async (response) => {
+    try{
+    let data = await response.json();
+      if (data.message == "Post message empty") {
+      setErrorMessage("Post message empty");
+    // } else if (data.message === "Post message too long (must be less than or equal to 280 chars)") {
+    //     setErrorMessage("Post message too long (must be less than or equal to 280 chars)");
+    } else {
+        setErrorMessage("An error has occurred. Please try again");
+    }
+  } catch (error) {
+    console.error(error);
+    setErrorMessage("An unknown error has occurred. Please try again");
+    }
+};
 
   const handleSubmit = async (event) => {
     const token = localStorage.getItem("token");
@@ -25,8 +43,16 @@ export const CreatePostPage = () => {
     const messageInput = document.getElementById("message");
     const messageValue = messageInput.value;
     if (token) {
-      postCreate(messageValue, token);
-      navigate("/posts");
+      try {
+        const response = await postCreate(messageValue, token);
+        if (response.status != 201) {
+          await handleErrorResponse(response);
+        } else {
+        navigate("/posts");
+        }
+      } catch (err) {
+        console.error(err)
+    }
     } else {
       navigate("/login");
     }
@@ -48,6 +74,7 @@ export const CreatePostPage = () => {
           value={value}
           onChange={handleChange}
         />
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button
           className="create-post-button"
           role="submit-button"
@@ -57,6 +84,7 @@ export const CreatePostPage = () => {
         >
           Submit
         </button>
+    
       </form>
     </>
   );
