@@ -6,6 +6,7 @@ import "./NavigationBar.css";
 const NavigationBar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   // Set functions for the different buttons on the navbar
   const logout = () => {
@@ -62,16 +63,21 @@ const NavigationBar = () => {
   };
 
   return (
-    <nav>
-      <div className='navbarBox'>
-        <Link to="/" className="navbarLogo" id='navbarLogo'>
-          <h1>Acebook</h1>
-        </Link>
-        <div className='navbarButtons'>
-          {renderButtons()}
+    <div>
+      <nav>
+        <div className='navbarBox'>
+          <Link to="/" className="navbarLogo" id='navbarLogo'>
+            <h1>Acebook</h1>
+          </Link>
+          <div className='navbarButtons'>
+            {renderButtons()}
+          </div>
         </div>
-      </div>
-    </nav>
+        <div className='signedInInfo'>
+          {username !== null ? `Signed in as ${username}` : null}
+        </div>
+      </nav>
+    </div>
   );
 };
 
