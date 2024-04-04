@@ -18,6 +18,8 @@ Acebook is a social media platform designed to allow users to post, comment and 
 
 3. **Post Management**: Users have the ability to manage their posts by deleting them if needed. They can also unlike posts they've previously liked and delete comments they've made on posts.
 
+4. **Profile photos**: Users can upload a profile picture up to 10 MB in size. If they chose not to upload a profile picture then they will have the default profile picture.
+
 
 ### Project Goals
 
