@@ -5,9 +5,10 @@
   column-gap: 10px;
   padding-left: 10px;
   width: 100%;
+  padding-top: 15px;
 }
 
-#comment {
+#comment-{postid} {
   width: 100%;
   display: inline-block;
   border: 1px solid #ccc;
@@ -24,7 +25,7 @@
   border: none;
   border-radius: 10px;
   cursor: grab;
-  width: 10%;
+  width: 15%;
 }
 
 .create-comment-button:hover {

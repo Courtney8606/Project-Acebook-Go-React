@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { commentCreate, getComments } from "../../services/comments";
+import FeedPage from "../../pages/Feed/FeedPage";
 import "/src/CommentsBox.css";
 
 export const CreateComment = (props) => {
@@ -25,6 +26,7 @@ export const CreateComment = (props) => {
     const commentValue = commentInput.value;
     if (token) {
       await commentCreate(commentValue, props.postid, token);
+      props.onCommentCreate();
       navigate("/posts");
     } else {
       navigate("/login");

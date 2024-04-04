@@ -64,6 +64,21 @@ export const FeedPage = () => {
     return <div>Loading...</div>; // Render loading indicator
   }
 
+  const handleCommentCreate = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const updatedCommentsData = {};
+      for (const post of posts) {
+        const commentData = await getComments(post._id, token);
+        updatedCommentsData[post._id] = commentData.comments;
+      }
+      setComments(updatedCommentsData);
+    } catch (error) {
+      console.error(error);
+      navigate("/login");
+    }
+  };
+
   const toggleLike = async (post_id) => {
     try {
       const token = localStorage.getItem("token");
@@ -110,12 +125,14 @@ export const FeedPage = () => {
                 likes={likes[post._id]}
                 onToggleLike={() => toggleLike(post._id)}
               />
+              <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             </div>
-            <DeleteButton key={`delete-${post._id}`} postID={post._id} />
+      
             <div className="commentsbox-css">
               <CommentsBox 
               key={`comment-${post._id}`}
               postid={post._id}
+              onCommentCreate={handleCommentCreate}
               /> 
             </div>
             <div>
@@ -134,3 +151,5 @@ export const FeedPage = () => {
     </>
   );
 };
+
+export default FeedPage
