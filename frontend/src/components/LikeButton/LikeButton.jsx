@@ -9,6 +9,7 @@ const LikeButton = (props) => {
       <button
         className="like"
         id="like-button"
+        role='liking'
         onClick={() => {
           props.onToggleLike();
         }}

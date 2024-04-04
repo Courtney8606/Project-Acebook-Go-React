@@ -13,7 +13,7 @@ const Post = (props) => {
             {/* <p>On {props.post.created_at}</p> */}
             <p>{props.post.username} said:</p>
           </div>
-        <article className="feed-message" key={props.post._id}>
+        <article role='posting' className="feed-message" key={props.post._id}>
           {props.post.message}
         </article>
       </div>

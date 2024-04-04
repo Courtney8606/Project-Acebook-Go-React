@@ -12,7 +12,7 @@ describe("LikeButton", () => {
       <LikeButton postid={postId} liked={liked[postId]} likes={likes[postId]} />
     );
 
-    const button = screen.getByRole("button");
+    const button = screen.getByRole("liking");
     expect(button.textContent).toBe("4");
     expect(button.firstChild).toHaveStyle({ color: "#ff6666" });
   });
