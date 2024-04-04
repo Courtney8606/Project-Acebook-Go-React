@@ -89,12 +89,12 @@ func GetPostsForUser(ctx *gin.Context) {
 			Created:  post.CreatedAt.Format("02/01/06 15:04"),
 		})
 	}
-	if len(jsonPosts) == 0 {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "This user has no posts"})
-		return
-	} else {
-		ctx.JSON(http.StatusOK, gin.H{"posts": jsonPosts, "token": token})
-	}
+	// if len(jsonPosts) == 0 {
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"message": "This user has no posts"})
+	// 	return
+	// } else {
+	ctx.JSON(http.StatusOK, gin.H{"posts": jsonPosts, "token": token})
+	// }
 }
 
 type createPostRequestBody struct {
