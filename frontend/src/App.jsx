@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/Login/LoginPage";
 import { SignupPage } from "./pages/Signup/SignupPage";
 import { FeedPage } from "./pages/Feed/FeedPage";
 import { CreatePostPage } from "./pages/CreatePost/CreatePostPage";
+import { MyPostsPage } from './pages/MyPostsPage/MyPostsPage';
 import NavigationBar from './components/NavigationBar/NavigationBar'
 
 // All components of the App are wrapped in a BrowserRouter component
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/signup" element={<SignupPage/>} />
         <Route path="/posts" element={<FeedPage/>} />
         <Route path="/createpost" element={<CreatePostPage/>} />
+        <Route path='/myposts' element={<MyPostsPage/>} />
       </Routes>
     </BrowserRouter>
   );

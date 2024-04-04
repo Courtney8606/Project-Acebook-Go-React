@@ -9,8 +9,10 @@ const NavigationBar = () => {
 
   // Set functions for the different buttons on the navbar
   const logout = () => {
-    // Removes the stored login token from browser's localStorage
+    // Removes the stored login ifno from browser's localStorage
     localStorage.removeItem('token')
+    localStorage.removeItem('userID')
+    localStorage.removeItem('username')
     navigate("/login");
   };
 
@@ -34,10 +36,16 @@ const NavigationBar = () => {
     navigate('/createpost');
   };
 
+  const myPosts = () => {
+    navigate('/myposts');
+  };
+
+
   const renderButtons = () => {
     if (token !== null) {
       return (
         <div>
+          <button className='navbarButton' role='myPostsButton' onClick={myPosts}>My posts</button>
           <button className='navbarButton' role='postsButton' onClick={posts}>Posts</button>
           <button className='navbarButton' role='createPostButton' onClick={createPost}>Create post</button>
           <button className='navbarButton' role='logoutButton' onClick={logout}>Logout</button>

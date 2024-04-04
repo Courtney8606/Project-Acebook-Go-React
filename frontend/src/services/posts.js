@@ -18,3 +18,24 @@ export const getPosts = async (token) => {
   const data = await response.json();
   return data;
 };
+
+// Function to retrieve posts based on user user ID.
+// The function contains an HTML query which relates the
+// user user ID to a user_id foreign key
+export const getPostsByUserID = async (userID, token) => {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(`${BACKEND_URL}/posts/user/${userID}`, requestOptions);
+
+  if (response.status !== 200) {
+    throw new Error("Unable to fetch posts");
+  }
+
+  const data = await response.json();
+  return data;
+};
