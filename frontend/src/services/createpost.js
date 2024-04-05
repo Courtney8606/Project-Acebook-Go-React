@@ -17,7 +17,8 @@ export const postCreate = async (message, token) => {
 
   const response = await fetch(`${BACKEND_URL}/posts`, requestOptions);
 
-  console.log(response.status);
+  // console.log(`The HTTP response code is: ${response.status}`);
+  // commenting this out as we don't need it for the moment
 
   // docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
   return response
