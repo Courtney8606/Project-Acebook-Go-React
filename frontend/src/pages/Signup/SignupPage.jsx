@@ -28,7 +28,7 @@ export const SignupPage = () => {
           setErrorMessage("This email address is already in use. Please log in or sign up with a different email address");
           document.getElementById("password").value = "";
       } else if (data.message === "Username already in use") {
-        setErrorMessage("This username address is already in use. Please log in or sign up with a different username");
+        setErrorMessage("This username is already in use. Please log in or sign up with a different username");
         document.getElementById("password").value = "";
       } else {
           setErrorMessage("An error has occurred. Please try again");
@@ -114,7 +114,6 @@ export const SignupPage = () => {
         
       </form>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-   
     </>
   );
 };
