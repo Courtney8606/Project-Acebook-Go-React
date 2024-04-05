@@ -6,11 +6,13 @@ import "./NavigationBar.css";
 const NavigationBar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  // grabbing token from browser storage sent by server IF logged in
+  // using it WHILE user stays logged in ?
   const username = localStorage.getItem("username");
 
   // Set functions for the different buttons on the navbar
   const logout = () => {
-    // Removes the stored login ifno from browser's localStorage
+    // Removes the stored login info from browser's localStorage
     localStorage.removeItem('token')
     localStorage.removeItem('userID')
     localStorage.removeItem('username')
@@ -19,7 +21,7 @@ const NavigationBar = () => {
 
   const login = () => {
     if (token) {
-      navigate('/posts');
+      navigate('/posts'); // Go to '/posts' if logged in
     } else {
       navigate('/login');
     };
@@ -55,9 +57,11 @@ const NavigationBar = () => {
     } else {
       return (
         <div>
-          <button className='navbarButton' role='loginButton' onClick={login}>Login</button>
-          <button className='navbarButton' role='signupButton' onClick={signup}>Signup</button>
-        </div>
+          {/* Commenting this out, not sure if we think we need it ? 
+          we display signup/login buttons already on HomePage.jsx:25-28 -> */}
+          {/* <button className='navbarButton' role='loginButton' onClick={login}>Login</button>
+          <button className='navbarButton' role='signupButton' onClick={signup}>Signup</button> */}
+        </div> 
       );
     }
   };
@@ -66,9 +70,19 @@ const NavigationBar = () => {
     <div>
       <nav>
         <div className='navbarBox'>
-          <Link to="/" className="navbarLogo" id='navbarLogo'>
-            <h1>Acebook</h1>
-          </Link>
+          {/* Change reaction of the <h1> based on login status */}
+          {/* IF there is a valid token (logged in) navigate to '/posts' */}
+          {/* ELSE (not logged in/first visit/pending signup) navigate to '/' instead */}
+          {token ? (
+            <Link to="/posts" className="navbarLogo" id='navbarLogo'>
+              <h1>Acebook</h1>
+            </Link>
+          ) : (
+            // navigate to '/' if no token
+            <Link to="/" className="navbarLogo" id='navbarLogo'>
+              <h1>Acebook</h1>
+            </Link>
+          )}
           <div className='navbarButtons'>
             {renderButtons()}
           </div>

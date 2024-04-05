@@ -21,7 +21,7 @@ export const HomePage = () => {
   return (
     <div className="home">
       <h1>Welcome to Acebook!</h1>
-      <p>Acebook is the fastest growing app for sharing posts with pals</p>
+      <h4><em>Acebook is the fastest growing app for sharing posts with pals.</em></h4>
       <div className='homepageButtons'>
         <button role='loginButton' onClick={login}>Login</button>
         <button role='signupButton' onClick={signup}>Signup</button>

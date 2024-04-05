@@ -1,0 +1,10 @@
+.image-upload {
+    background-color: #4286f4;
+    color: white;
+    padding: 14px 0;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: grab;
+    width: 48%;
+  }
