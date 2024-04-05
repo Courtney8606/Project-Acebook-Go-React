@@ -17,6 +17,7 @@ export const MyPostsPage = () => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState([]);
   const [comments, setComments] = useState([]);
+  const [emptyPosts, setEmptyPosts] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -37,6 +38,11 @@ export const MyPostsPage = () => {
         // Fetch posts
         const { posts: postsData } = await getPostsByUserID(userID, token);
         setPosts(postsData);
+        console.log(postsData)
+        console.log(length.postsData)
+        if (postsData.length != 0) {
+          setEmptyPosts(false)
+        }
 
         // Fetch likes for each post
         const likesData = {};
@@ -154,6 +160,7 @@ export const MyPostsPage = () => {
           </div>
         ))}
       </div>
+      {emptyPosts && <p className="empty-posts">You have no posts to display</p>}
     </>
   );
 };
