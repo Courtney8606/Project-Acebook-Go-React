@@ -131,7 +131,8 @@ export const MyPostsPage = () => {
             <div className="post-css">
               <Post post={post} />
             </div>
-            <div className="like-css">
+            <div className="like-delete-buttons">
+              <DeleteButton key={`delete-${post._id}`} postID={post._id} />
               <LikeButton
                 postid={post._id}
                 liked={liked[post._id]}
@@ -139,7 +140,6 @@ export const MyPostsPage = () => {
                 onToggleLike={() => toggleLike(post._id)}
               />
             </div>
-            <DeleteButton key={`delete-${post._id}`} postID={post._id} />
             <div className="commentsbox-css">
               <CommentsBox 
               key={`comment-${post._id}`}
