@@ -8,14 +8,14 @@
   padding-top: 15px;
 }
 
-#comment-{postid} {
+/* #comment-{postid} {
   width: 100%;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 10px;
   text-align: left;
   height: 30px;
-}
+} */
 
 .create-comment-button {
   background-color: #4286f4;
