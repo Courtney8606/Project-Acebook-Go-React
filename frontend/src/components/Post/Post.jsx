@@ -9,9 +9,9 @@ const Post = (props) => {
         </div>
       </div>
       <div className='message-box'>
-        <div className='userinfo'>
-            {/* <p>On <em><strong>{props.post.created_at}</strong></em> </p>
-            <p><em><strong>{props.post.username}</strong></em> said:</p> */}
+          <div className='userinfo'>
+            <p className='postDate'>On {props.post.created_at}</p>
+            <p><em><strong>{props.post.username}</strong></em> said:</p>
           </div>
         <article role='posting' className="feed-message" key={props.post._id}>
           {props.post.message}

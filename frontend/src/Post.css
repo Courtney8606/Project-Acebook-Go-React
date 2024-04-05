@@ -39,3 +39,7 @@
   box-sizing: border-box;
   text-align: left;
 }
+
+.postDate {
+  color: darkgrey;
+}
