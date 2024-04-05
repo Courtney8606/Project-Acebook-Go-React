@@ -19,6 +19,8 @@ body {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
+  resize: vertical; /* Optional: Allow vertical resizing of the textarea */
+  overflow-y: auto;
 }
 .icon-post {
   font-size: 90px;
