@@ -9,7 +9,7 @@ export const CreateComment = (props) => {
   const [errorMessage, seterrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const maxnumber = 20;
+  const maxnumber = 280;
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
