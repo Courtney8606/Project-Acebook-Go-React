@@ -24,7 +24,6 @@ export const commentCreate = async (comment, postid, token) => {
     text: comment,
   };
 
-  console.log(commentinput)
   const requestOptions = {
     method: "POST",
     headers: {

@@ -8,7 +8,7 @@ export const CreateComment = (props) => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
-  const maxnumber = 20;
+  const maxnumber = 280;
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
