@@ -112,7 +112,7 @@ export const FeedPage = () => {
     <>
       <h1>Posts</h1>
       <div className="feed" role="feed">
-        {posts.filter(post => !post.deletedAt).map((post) => (
+        {posts.map((post) => (
           <div className="post-object" key={post._id}>
             <div className="post-css">
               <Post post={post} />

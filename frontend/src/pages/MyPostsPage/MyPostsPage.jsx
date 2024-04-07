@@ -130,7 +130,7 @@ export const MyPostsPage = () => {
       </div>
       <h1>My posts</h1>
       <div className="feed" role="feed">
-        {posts.filter(post => !post.deletedAt).map((post) => (
+        {posts.map((post) => (
           <div className="post-object" key={post._id}>
             <div className="post-css">
               <Post post={post} />
