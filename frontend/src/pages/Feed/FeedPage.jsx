@@ -5,7 +5,6 @@ import { getComments, commentCreate } from "../../services/comments";
 import Post from "../../components/Post/Post";
 import UserComment from "../../components/Comment/Comment";
 import LikeButton from "../../components/LikeButton/LikeButton";
-import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import { getLikes, likeCreate, unlikeCreate } from "../../services/likes";
 import "/src/FeedPage.css";
@@ -113,7 +112,7 @@ export const FeedPage = () => {
     <>
       <h1>Posts</h1>
       <div className="feed" role="feed">
-        {posts.filter(post => !post.deletedAt).map((post) => (
+        {posts.map((post) => (
           <div className="post-object" key={post._id}>
             <div className="post-css">
               <Post post={post} />
