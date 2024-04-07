@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./NavigationBar.css";
+import logo from "../../assets/favicon-16x16.png"
 
 // NavigationBar will render at the top of the page. The <nav>
 // tag identifies it as the navigation information for the site
@@ -70,6 +71,7 @@ const NavigationBar = () => {
     <div>
       <nav>
         <div className='navbarBox'>
+          <img className="AcebookLogo" src={logo}></img>
           {/* Change reaction of the <h1> based on login status */}
           {/* IF there is a valid token (logged in) navigate to '/posts' */}
           {/* ELSE (not logged in/first visit/pending signup) navigate to '/' instead */}

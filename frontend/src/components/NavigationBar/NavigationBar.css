@@ -20,8 +20,10 @@
 }
 
 img {
-  height: auto;
-  width: 70px;
+  position: relative;
+  top: 10px;
+  height: 28px;
+  width: 28px;
 }
 
 .navbarLogo h1 {
