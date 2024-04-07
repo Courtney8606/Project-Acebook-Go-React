@@ -21,6 +21,10 @@ export const MyPostsPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const handlePostDeletion = (postID) => {
+    setPosts(posts.filter(post => post._id !== postID));
+  };
+
   // New addition - set Comments
   // const [comments, setComments] = useState([]);
 
@@ -132,7 +136,12 @@ export const MyPostsPage = () => {
               <Post post={post} />
             </div>
             <div className="like-delete-buttons">
-              <DeleteButton key={`delete-${post._id}`} postID={post._id} />
+              <DeleteButton
+                key={`delete-${post._id}`}
+                postID={post._id}
+                // Functionality to rerender the component when it is deleted
+                onDelete={handlePostDeletion}
+              />
               <LikeButton
                 postid={post._id}
                 liked={liked[post._id]}
