@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./NavigationBar.css";
-import logo from "../../assets/favicon-16x16.png"
+import logoImage from "../../assets/acebook-logo-img.png"
+import logoText from "../../assets/acebook-logo-text.png"
 
 // NavigationBar will render at the top of the page. The <nav>
 // tag identifies it as the navigation information for the site
@@ -18,18 +19,6 @@ const NavigationBar = () => {
     localStorage.removeItem('userID')
     localStorage.removeItem('username')
     navigate("/login");
-  };
-
-  const login = () => {
-    if (token) {
-      navigate('/posts'); // Go to '/posts' if logged in
-    } else {
-      navigate('/login');
-    };
-  };
-
-  const signup = () => {
-    navigate('/signup');
   };
 
   const posts = () => {
@@ -71,18 +60,19 @@ const NavigationBar = () => {
     <div>
       <nav>
         <div className='navbarBox'>
-          <img className="AcebookLogo" src={logo}></img>
           {/* Change reaction of the <h1> based on login status */}
           {/* IF there is a valid token (logged in) navigate to '/posts' */}
           {/* ELSE (not logged in/first visit/pending signup) navigate to '/' instead */}
           {token ? (
             <Link to="/posts" className="navbarLogo" id='navbarLogo'>
-              <h1>Acebook</h1>
+              <img className="AcebookLogoImage" role="logoImg" alt="Acebook logo" src={logoImage}></img>
+              <img className="AcebookLogoText" role="logoText" alt="Acebook logo text" src={logoText}></img>
             </Link>
           ) : (
             // navigate to '/' if no token
             <Link to="/" className="navbarLogo" id='navbarLogo'>
-              <h1>Acebook</h1>
+              <img className="AcebookLogoImage" role="logoImg" alt="Acebook logo" src={logoImage}></img>
+              <img className="AcebookLogoText" role="logoText" alt="Acebook logo text" src={logoText}></img>
             </Link>
           )}
           <div className='navbarButtons'>

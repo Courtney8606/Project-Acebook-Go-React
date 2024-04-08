@@ -31,11 +31,13 @@ describe("NavigationBar render", () => {
     render(<NavigationBar />);
 
     // Test the appropriate navbar components exist
-    const logo = screen.getByRole('heading');
+    const logoImage = screen.getByRole('logoImg');
+    const logoText = screen.getByRole('logoText');
     const postsLink = screen.getByRole('postsButton');
     const createPostLink = screen.getByRole('createPostButton');
     const logoutLink = screen.getByRole('logoutButton');
-    expect(logo).toBeTruthy();
+    expect(logoImage).toBeTruthy();
+    expect(logoText).toBeTruthy();
     expect(postsLink).toBeTruthy();
     expect(createPostLink).toBeTruthy();
     expect(logoutLink).toBeTruthy();
@@ -51,11 +53,13 @@ describe("NavigationBar render", () => {
     render(<NavigationBar />);
 
     // Test the appropriate logged in navbar components do not exist, while the header does
-    const logo = screen.getByRole('heading');
+    const logoImage = screen.getByRole('logoImg');
+    const logoText = screen.getByRole('logoText');
     const posts = screen.queryByRole('postsButton');
     const createPosts = screen.queryByRole('createPostButton');
     const logout = screen.queryByRole('logoutButton');
-    expect(logo).toBeTruthy();
+    expect(logoImage).toBeTruthy();
+    expect(logoText).toBeTruthy();
     expect(posts).toBeNull();
     expect(createPosts).toBeNull();
     expect(logout).toBeNull();

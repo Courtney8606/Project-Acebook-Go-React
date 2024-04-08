@@ -1,4 +1,4 @@
-.navbarBox{
+.navbarBox {
   display: flex;
   flex-direction: row;
   height: 44px;
@@ -10,28 +10,24 @@
   border-right-width: 0px;
   border-bottom-width: 8px;
   border-left-width: 0px;
-
 }
 
 .navbarLogo {
-  flex: 50%;
-  margin-right: 10px;
-  width: 200px;
+  display: flex;
 }
 
-img {
+img.AcebookLogoImage {
+  position: relative;
+  top: 4px;
+  height: 58px;
+  width: auto;;
+}
+
+img.AcebookLogoText {
   position: relative;
   top: 10px;
-  height: 28px;
-  width: 28px;
-}
-
-.navbarLogo h1 {
-  color: var(--main-color);
-  font-family: "Trebuchet MS", Tahoma, sans-serif;
-  font-size: 2rem;
-  text-align: left;
-  line-height: 0;
+  height: 32px;
+  width: auto;
 }
 
 .navbarButtons {
