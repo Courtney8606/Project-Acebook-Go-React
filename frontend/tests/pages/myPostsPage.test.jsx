@@ -53,7 +53,7 @@ describe("My Posts Page", () => {
 
     render(<MyPostsPage />);
 
-    const post = await screen.findByRole("article");
+    const post = await screen.findByRole("posting");
     expect(post.textContent).toEqual("My post 2");
   });
 
