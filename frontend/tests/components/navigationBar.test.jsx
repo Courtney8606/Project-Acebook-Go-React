@@ -50,57 +50,19 @@ describe("NavigationBar render", () => {
     // Render the navbar
     render(<NavigationBar />);
 
-    // Test the appropriate navbar components exist
+    // Test the appropriate logged in navbar components do not exist, while the header does
     const logo = screen.getByRole('heading');
-    const loginLink = screen.getByRole('loginButton');
-    const signupLink = screen.getByRole('signupButton');
+    const posts = screen.queryByRole('postsButton');
+    const createPosts = screen.queryByRole('createPostButton');
+    const logout = screen.queryByRole('logoutButton');
     expect(logo).toBeTruthy();
-    expect(loginLink).toBeTruthy();
-    expect(signupLink).toBeTruthy();
+    expect(posts).toBeNull();
+    expect(createPosts).toBeNull();
+    expect(logout).toBeNull();
   });
 });
 
 describe("User clicks on NavigationBar components", () => {
-  test("signed out user can click to login", async () => {
-    // Remove any stored token to simulate logging out
-    window.localStorage.removeItem("token");
-
-    // Get the mocked navigate function
-    const navigateMock = useNavigate();
-
-    // Render the navbar
-    render(<NavigationBar />);
-
-    // Simulate a click on the Login button
-    const loginLink = screen.getByRole('loginButton');
-    userEvent.click(loginLink);
-
-    // Assert that navigate is called with the correct path
-    await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith("/login");
-    });
-  });
-
-  test("signed out user can click to sign up", async () => {
-    // Remove any stored token to simulate logging out
-    window.localStorage.removeItem("token");
-
-    // Get the mocked navigate function
-    const navigateMock = useNavigate();
-
-    // Render the navbar
-    render(<NavigationBar />);
-
-    // Simulate a click on the Login button
-    const signupLink = screen.getByRole('signupButton');
-    userEvent.click(signupLink);
-
-    // Assert that navigate is called with the correct path
-    await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith("/signup");
-    });
-  });
-
   test("signed in user can click to navigate to posts", async () => {
     // Remove any stored token to be sure
     beforeEach(() => {
