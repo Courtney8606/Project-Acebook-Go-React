@@ -5,7 +5,6 @@ import { vi } from "vitest";
 
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../src/services/authentication";
-
 import { SignupPage } from "../../src/pages/Signup/SignupPage";
 
 // Mocking React Router's useNavigate function
@@ -30,11 +29,11 @@ const completeSignupForm = async () => {
 
   const emailInputEl = screen.getByPlaceholderText("Email");
   const passwordInputEl = screen.getByPlaceholderText("Password");
-  // const usernameInputEl = screen.getByPlaceholderText("Username");
+  const usernameInputEl = screen.getByPlaceholderText("Username");
   const submitButtonEl = screen.getByRole("submit-button");
 
   await user.type(emailInputEl, "test@email.com");
-  // await user.type(usernameInputEl, "TestUsername");
+  await user.type(usernameInputEl, "TestUsername");
   await user.type(passwordInputEl, "1234");
   await user.click(submitButtonEl);
 };
@@ -49,7 +48,7 @@ describe("Signup Page", () => {
 
     await completeSignupForm();
 
-    expect(signup).toHaveBeenCalledWith("test@email.com", "1234");
+    expect(signup).toHaveBeenCalledWith("test@email.com", "1234", "TestUsername");
   });
 
 
@@ -65,7 +64,7 @@ describe("Signup Page", () => {
 
     await completeSignupForm();
     
-    expect(signup).toHaveBeenCalledWith("test@email.com", "1234");
+    expect(signup).toHaveBeenCalledWith("test@email.com", "1234", "TestUsername");
     expect(navigateMock).toHaveBeenCalledWith("/login");
   });
 
@@ -103,7 +102,7 @@ test("error message if username not provided", async () => {
   render(<SignupPage />);
 
   signup.mockResolvedValueOnce({
-    status: 400, json: async () => ({message: "Must supply username and password"})
+    status: 400, json: async () => ({message: "Must supply email, username and password"})
   })
 
   const navigateMock = useNavigate();
@@ -114,7 +113,7 @@ test("error message if username not provided", async () => {
 
   // Ensure that the error message is rendered in the HTML
 
-  expect(screen.getByText("Please input both a valid email address and a password")).toBeTruthy();
+  expect(screen.getByText("Please input both a valid email address, username and a password")).toBeTruthy();
 
 })
 

@@ -46,6 +46,7 @@ describe("Create Post", () => {
 
   test("Natigates to Feedpage if token", async () => {
     window.localStorage.setItem("token", "testToken");
+    postCreate.mockResolvedValue({ status: 201 });
     render(<CreatePostPage />);
     await completeCreatePost();
     const navigateMock = useNavigate();
