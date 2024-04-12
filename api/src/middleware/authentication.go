@@ -10,9 +10,10 @@ import (
 
 func AuthenticationMiddleware(ctx *gin.Context) {
 	authHeader := ctx.GetHeader("Authorization")
+	fmt.Println(authHeader)
 	if len(authHeader) < 7 {
 		fmt.Println("Authorization header is missing or invalid")
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Authorization header is missing or invalid"})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Authorization header is missing or invalid"})
 		return
 	}
 
@@ -24,7 +25,7 @@ func AuthenticationMiddleware(ctx *gin.Context) {
 
 	if err != nil {
 		fmt.Println(err)
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "auth error"})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "auth error"})
 		return
 	}
 

@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/makersacademy/go-react-acebook-template/api/src/models"
@@ -35,9 +37,6 @@ func GetProfilePicForUser(ctx *gin.Context) {
 
 	pictureFilePath := filepath.Join(filePath, picture)
 
-	ctx.Header("Cache-Control", "no-cache, no-store, must-revalidate")
-	ctx.Header("Pragma", "no-cache")
-	ctx.Header("Expires", "0")
 	ctx.File(pictureFilePath)
 }
 
@@ -59,8 +58,6 @@ func UploadProfilePicture(ctx *gin.Context) {
 	}
 
 	userID := ctx.GetString("userID")
-	filename := userID + filepath.Ext(file.Filename)
-	picFilePath := filepath.Join(filePath, filename)
 
 	user, err := models.FindUser(userID)
 	if err != nil {
@@ -68,7 +65,20 @@ func UploadProfilePicture(ctx *gin.Context) {
 		return
 	}
 
-	if user.ProfilePic != "" {
+	var picFilePath string
+	var filename string
+	if user.ProfilePic == "" {
+		filename = userID + "_1" + filepath.Ext(file.Filename)
+		picFilePath = filepath.Join(filePath, filename)
+	} else {
+		nameParts := strings.Split(user.ProfilePic, "_")
+		versionWithExtension := nameParts[1]
+		versionParts := strings.Split(versionWithExtension, ".")
+		version, _ := strconv.Atoi(versionParts[0])
+		newVersion := strconv.Itoa(version + 1)
+		filename = userID + "_" + newVersion + filepath.Ext(file.Filename)
+		picFilePath = filepath.Join(filePath, filename)
+
 		err = deleteProfilePicture(user.ProfilePic)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete existing profile picture"})
