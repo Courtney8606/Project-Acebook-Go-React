@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +27,17 @@ func GetProfilePicForUser(ctx *gin.Context) {
 	var picture string
 	if user.ProfilePic == "" {
 		picture = "default.png"
+		// fmt.Println("loaded default")
 	} else {
 		picture = user.ProfilePic
+		// fmt.Println("loaded user's profile picture")
 	}
 
 	pictureFilePath := filepath.Join(filePath, picture)
+
+	ctx.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+	ctx.Header("Pragma", "no-cache")
+	ctx.Header("Expires", "0")
 	ctx.File(pictureFilePath)
 }
 
@@ -54,15 +62,24 @@ func UploadProfilePicture(ctx *gin.Context) {
 	filename := userID + filepath.Ext(file.Filename)
 	picFilePath := filepath.Join(filePath, filename)
 
-	err = ctx.SaveUploadedFile(file, picFilePath)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file to folder"})
-		return
-	}
-
 	user, err := models.FindUser(userID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+		return
+	}
+
+	if user.ProfilePic != "" {
+		err = deleteProfilePicture(user.ProfilePic)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete existing profile picture"})
+			fmt.Println(err)
+			return
+		}
+	}
+
+	err = ctx.SaveUploadedFile(file, picFilePath)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file to folder"})
 		return
 	}
 
@@ -98,4 +115,13 @@ func isImage(file *multipart.FileHeader) bool {
 	default:
 		return false
 	}
+}
+
+func deleteProfilePicture(filename string) error {
+	filePath := filepath.Join(filePath, filename)
+	err := os.Remove(filePath)
+	if err != nil {
+		return err
+	}
+	return nil
 }

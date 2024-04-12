@@ -9,7 +9,14 @@ import (
 )
 
 func AuthenticationMiddleware(ctx *gin.Context) {
-	tokenString := ctx.GetHeader("Authorization")[7:]
+	authHeader := ctx.GetHeader("Authorization")
+	if len(authHeader) < 7 {
+		fmt.Println("Authorization header is missing or invalid")
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Authorization header is missing or invalid"})
+		return
+	}
+
+	tokenString := authHeader[7:]
 
 	// fmt.Println(tokenString)
 
