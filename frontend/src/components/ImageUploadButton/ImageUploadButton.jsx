@@ -15,28 +15,30 @@ const ImageUploadButton = (props) => {
 
   const handleSubmit = async (event) => {
     const token = localStorage.getItem("token");
+    console.log(token)
     const userID = localStorage.getItem("userID");
     event.preventDefault();
     if (token && image) {
         const formData = new FormData();
         formData.append('profile_picture', image);
         await imageCreate(formData, token)
+        console.log(token)
+        const newimage = await getImage(userID, token);
+        console.log("NewImage:", newimage);
+        props.setProfile(newimage);
         }
     }
 
   return (
     <div className="image-upload">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}/>
-        <input 
-        type="submit" 
-        value="Submit" 
+      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <button
+        type="button"
         className="image-upload-button"
-        role='imageupload'
         onClick={handleSubmit}
-        />
+      >
+        Submit
+      </button>
     </div>
   );
 };

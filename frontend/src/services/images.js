@@ -2,6 +2,7 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const getImage = async (user_id, token) => {
+  const uniqueParam = Date.now();
   const requestOptions = {
     method: "GET",
     headers: {
@@ -9,8 +10,7 @@ export const getImage = async (user_id, token) => {
     },
   };
 
-  const response = await fetch(`${BACKEND_URL}/images/${user_id}`, requestOptions);
-  console.log(response)
+  const response = await fetch(`${BACKEND_URL}/images/${user_id}?unique=${uniqueParam}`, requestOptions);
   
   if (response.status !== 200) {
     throw new Error("Unable to fetch image");
@@ -20,12 +20,12 @@ export const getImage = async (user_id, token) => {
   if (!contentType || !contentType.startsWith('image/')) {
  
   }
-  const imageData = await response.url;
-  return imageData;
+
+  const imageData = await response.blob();
+  return URL.createObjectURL(imageData);
 };
 
 export const imageCreate = async (formData, token) => {
-
   const requestOptions = {
     method: "POST",
     headers: {
@@ -41,6 +41,5 @@ export const imageCreate = async (formData, token) => {
     }
 
     const data = await response.json();
-    console.log("Data:", data)
     return data;
 };

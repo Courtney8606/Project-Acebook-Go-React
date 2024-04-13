@@ -16,14 +16,13 @@ if (!token) {
   navigate("/login");
   return;
 }
-
+console.log(profile)
 useEffect(() => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       const userID = localStorage.getItem("userID");
       const profilepicture = await getImage(userID, token);
-      console.log(profilepicture)
       setProfile(profilepicture);
     } catch (error) {
       console.error(error);
@@ -33,8 +32,11 @@ useEffect(() => {
     }
   };
 
-  fetchData();
-}, [navigate]);
+  if (token) {
+    fetchData();
+  }
+  
+}, []);
 
   return (
     <div className="profile-box">
@@ -50,7 +52,7 @@ useEffect(() => {
         <p className="profile-bio">
             {/* You can add more profile details here if pulled through from the backend */}
         </p>
-        <ImageUploadButton />
+        <ImageUploadButton setProfile={setProfile}/>
       </div>
     </div>
   );
