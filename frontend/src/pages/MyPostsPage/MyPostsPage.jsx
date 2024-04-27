@@ -9,6 +9,7 @@ import UserComment from "../../components/Comment/Comment";
 import CommentsBox from "../../components/CommentsBox/CommentsBox";
 import { getLikes, likeCreate, unlikeCreate } from "../../services/likes";
 import ProfileBox from "../../components/Profile/Profile";
+import { getImage } from "../../services/images";
 import "/src/FeedPage.css";
 import "../../components/Profile/Profile.css";
 
@@ -20,13 +21,11 @@ export const MyPostsPage = () => {
   const [emptyPosts, setEmptyPosts] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [profile, setProfile] = useState([]);
 
   const handlePostDeletion = (postID) => {
-    setPosts(posts.filter(post => post._id !== postID));
+    setPosts(posts.filter((post) => post._id !== postID));
   };
-
-  // New addition - set Comments
-  // const [comments, setComments] = useState([]);
 
   const token = localStorage.getItem("token");
   if (!token) {
@@ -38,14 +37,12 @@ export const MyPostsPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const userID = localStorage.getItem('userID');
+        const userID = localStorage.getItem("userID");
         // Fetch posts
         const { posts: postsData } = await getPostsByUserID(userID, token);
         setPosts(postsData);
-        console.log(postsData)
-        console.log(length.postsData)
         if (postsData.length != 0) {
-          setEmptyPosts(false)
+          setEmptyPosts(false);
         }
 
         // Fetch likes for each post
@@ -63,7 +60,9 @@ export const MyPostsPage = () => {
         setLikes(likesData);
         setLiked(likedData);
         setComments(commentsData);
-
+        const profilepicture = await getImage(userID, token);
+        setProfile(profilepicture);
+        console.log(profilepicture);
       } catch (error) {
         console.error(error);
         navigate("/login");
@@ -78,6 +77,10 @@ export const MyPostsPage = () => {
   if (loading) {
     return <div>Loading...</div>; // Render loading indicator
   }
+
+  const handleProfilePictureUpdate = (newProfilePicture) => {
+    setProfile(newProfilePicture);
+  };
 
   const handleCommentCreate = async () => {
     try {
@@ -126,14 +129,14 @@ export const MyPostsPage = () => {
   return (
     <>
       <div className="profile-container">
-        <ProfileBox />
+        <ProfileBox profile={profile} setProfile={handleProfilePictureUpdate} />
       </div>
       <h1>My posts</h1>
       <div className="feed" role="feed">
         {posts.map((post) => (
           <div className="post-object" key={post._id}>
             <div className="post-css">
-              <Post post={post} />
+              <Post post={post} profile={profile} />
             </div>
             <div className="like-delete-buttons">
               <DeleteButton
@@ -150,26 +153,31 @@ export const MyPostsPage = () => {
               />
             </div>
             <div className="commentsbox-css">
-              <CommentsBox 
-              key={`comment-${post._id}`}
-              postid={post._id}
-              onCommentCreate={handleCommentCreate}
-              /> 
+              <CommentsBox
+                key={`comment-${post._id}`}
+                postid={post._id}
+                onCommentCreate={handleCommentCreate}
+              />
             </div>
             <div>
-              {comments[post._id] && comments[post._id].map((comment) => (
-                <UserComment 
-                  key={comment.comment_id}
-                  postid={post._id}
-                  comment={comment.text}
-                  username={comment.username}
-                />
-              ))}
+              {comments[post._id] &&
+                comments[post._id].map((comment) => (
+                  <UserComment
+                    key={comment.comment_id}
+                    postid={post._id}
+                    comment={comment.text}
+                    username={comment.username}
+                  />
+                ))}
             </div>
           </div>
         ))}
       </div>
-      {emptyPosts && <p className="empty-posts">You have no posts to display</p>}
+      {emptyPosts && (
+        <p className="empty-posts">You have no posts to display</p>
+      )}
     </>
   );
 };
+
+export default MyPostsPage;

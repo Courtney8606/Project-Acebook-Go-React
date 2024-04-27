@@ -18,6 +18,7 @@ type JSONPost struct {
 	Username string `json:"username"`
 	UserID   uint   `json:"user_id"`
 	Created  string `json:"created_at"`
+	UserID  uint `json:"user_id"`
 }
 
 func GetAllPosts(ctx *gin.Context) {
@@ -55,6 +56,7 @@ func GetAllPosts(ctx *gin.Context) {
 			Username: postUser.Username,
 			UserID:   postUser.ID,
 			Created:  post.CreatedAt.Format("02/01/06 15:04"),
+			UserID: post.UserID,
 		})
 	}
 
