@@ -3,6 +3,7 @@ module github.com/makersacademy/go-react-acebook-template/api
 go 1.21.5
 
 require (
+	github.com/AfterShip/email-verifier v1.4.0
 	github.com/gin-contrib/cors v1.7.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/assert/v2 v2.2.0
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	github.com/AfterShip/email-verifier v1.4.0 // indirect
 	github.com/bytedance/sonic v1.11.3 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
