@@ -2,7 +2,7 @@
 
 Acebook is a social media platform designed to allow users to post, comment and like each others posts. The project aims to provide users with a platform for sharing content and engaging with others. 
 
-This was a unique opportunity at this stage of learning to collaborate within a multi-language team, using Javascript and React.js on the frontend and Go on the backend. This provided a new challenge learning to integrate completely disparate front and back end technologies. It also allowed me a concentrated learning experience on the frontend, delving more deeply and honing skills within UI development.  
+This was a unique opportunity at this stage of learning to collaborate within a multi-language team, using Javascript and React.js on the frontend and Go on the backend. This provided a new challenge learning to integrate completely disparate front and back end technologies. It also allowed me a concentrated learning experience on the frontend, delving more deeply into UI development.  
 
 ### Technologies Used
 
@@ -14,7 +14,7 @@ This was a unique opportunity at this stage of learning to collaborate within a 
 
 1. **User Authentication**: Acebook provides user authentication, allowing users to sign in to their accounts and log out when they're done. This ensures that only authorised users can access their accounts and interact with the platform. Users are also given a username which is displayed alongside posts in their feed and also on their post viewing page.
 
-2. **Post Creation and Interaction**: Users can create posts to share their thoughts. Posts and comments have a date/time stamp are displayed in descending order, with the most recent post/comment appearing first. Users also have a user page which displays all their posts on their page. They can also like, comment on, and view the likes/comments of their own posts and posts by other users.
+2. **Post Creation and Interaction**: Users can create posts to share their thoughts. Posts and comments have a date/time stamp are displayed in descending order, with the most recent post/comment appearing first. Users also have a user account page which displays only their posts. They can also like, comment on, and view the likes/comments of their own posts and posts by other users.
 
 3. **Post Management**: Users have the ability to manage their posts by deleting them if needed. They can also unlike posts they've previously liked and delete comments they've made on posts.
 
@@ -31,24 +31,31 @@ The primary goals of the Acebook project are to:
 
 ### Installation 
 
-1. **Clone the Repository**: `git clone` https://github.com/PatSternberg/go-react-acebook-radon
+1. **Clone the Repository**
 
 2. **Navigate to the Directory**: Navigate to the directory where your Acebook code is located 
 
-3. **Install dependencies for both the frontend and api applications**:
-- Install Homebrew:`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-- Install Node: `brew install nvm`
-- Install Go:https://go.dev/doc/install
+3. **Install dependencies for both the frontend and backend applications**
+
+These instructions are for macOS, and it is assumed that that the following are already installed:
+
+* NVM
+* Node.js
+* Homebrew
+* Go (Install Go:https://go.dev/doc/install)
 
 Run the following commands:
 - `cd frontend`
 - `npm install`
 - `cd ../api`
 - `go get .`
+- `brew services start postgresql`
+
+* Create a file api/.env with contents confirmed directly with myself. 
+* Create a file frontend/.env with the following contents: VITE_BACKEND_URL="http://localhost:8082"
 
 4. **Create Database**:
 - `createdb acebook`
-
 
 5. **Start the Development Server**: 
 Within the api folder, run `go run main.go` to start the backend server, click Allow to accept incoming network connections.  
