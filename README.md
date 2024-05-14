@@ -1,14 +1,14 @@
-# Acebook README
-
-## Project Overview
+# Acebook
 
 Acebook is a social media platform designed to allow users to post, comment and like each others posts. The project aims to provide users with a platform for sharing content and engaging with others. 
 
+This was a unique opportunity at this stage of learning to collaborate within a multi-language team, using Javascript and React.js on the frontend and Go on the backend. This provided a new challenge learning to integrate completely disparate front and back end technologies. It also allowed me a concentrated learning experience on the frontend, delving more deeply and honing skills within UI development.  
+
 ### Technologies Used
 
-- **Backend**: Go (Golang) is used to implement the backend functionality of Acebook. Go is a statically typed, compiled programming language known for its simplicity and efficiency.
-
 - **Frontend**: JavaScript and React.js are used to develop the frontend components and user interface of Acebook. React.js is a popular JavaScript library for building user interfaces, known for its component-based architecture and reusability.
+
+- **Backend**: Go (Golang) is used to implement the backend functionality of Acebook. Go is a statically typed, compiled programming language known for its simplicity and efficiency.
 
 ### Key Features
 
@@ -18,7 +18,7 @@ Acebook is a social media platform designed to allow users to post, comment and 
 
 3. **Post Management**: Users have the ability to manage their posts by deleting them if needed. They can also unlike posts they've previously liked and delete comments they've made on posts.
 
-4. **Profile Pictures**: Users can upload a profile picture up to 10 MB in size. If they chose not to upload a profile picture then they will have the default profile picture.
+4. **Profile Pictures**: Users can upload a profile picture up to 10 MB in size. If they chose not to upload a profile picture then they will have a default profile picture.
 
 
 ### Project Goals
@@ -33,7 +33,7 @@ The primary goals of the Acebook project are to:
 
 1. **Clone the Repository**: `git clone` https://github.com/PatSternberg/go-react-acebook-radon
 
-2. **Navigate to the Directory**: Navigate the the directory where your Acebook code is located 
+2. **Navigate to the Directory**: Navigate to the directory where your Acebook code is located 
 
 3. **Install dependencies for both the frontend and api applications**:
 - Install Homebrew:`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
@@ -51,6 +51,5 @@ Run the following commands:
 
 
 5. **Start the Development Server**: 
-Run the command `npm start`
-This starts the development server for Acebook allowing you to interact with the app in your web browser 
-Navigate to the back end server and run `go main.go` 
+Within the api folder, run `go run main.go` to start the backend server, click Allow to accept incoming network connections.  
+Within the frontend folder, run the command `npm run dev` to begin the frontend server, and navigate to http://localhost:5173/
